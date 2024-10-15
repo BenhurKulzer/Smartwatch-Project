@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -17,24 +18,45 @@ import com.example.wearbear.model.Robot
 
 @Composable
 fun RobotRow(robot: Robot, onClick: () -> Unit) {
+    val statusColor = when (robot.status) {
+        "Running" -> Color.Green
+        "Idle" -> Color.Blue
+        "Charging" -> Color.Yellow
+        "Offline" -> Color.Gray
+        else -> Color.Gray
+    }
+
     Chip(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         label = {
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
                     text = robot.name,
                     color = Color.White,
                     fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f),
                 )
 
+                Spacer(modifier = Modifier.width(8.dp))
+
                 Text(
                     text = "${robot.battery}%",
-                    fontSize = 15.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.White,
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(12.dp)
+                        .background(statusColor, CircleShape)
                 )
             }
         },
@@ -42,13 +64,6 @@ fun RobotRow(robot: Robot, onClick: () -> Unit) {
         colors = ChipDefaults.primaryChipColors(
             backgroundColor = Color.DarkGray
         ),
-        shape = RoundedCornerShape(12.dp),
-        icon = {
-            Box(
-                modifier = Modifier
-                    .size(11.dp)
-                    .background(Color.Green, shape = CircleShape)
-            )
-        }
+        shape = RoundedCornerShape(12.dp)
     )
 }
