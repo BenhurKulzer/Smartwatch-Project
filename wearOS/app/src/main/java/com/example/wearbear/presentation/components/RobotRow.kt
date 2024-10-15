@@ -19,11 +19,11 @@ import com.example.wearbear.model.Robot
 @Composable
 fun RobotRow(robot: Robot, onClick: () -> Unit) {
     val statusColor = when (robot.status) {
-        "Running" -> Color.Green
-        "Idle" -> Color.Blue
-        "Charging" -> Color.Yellow
-        "Offline" -> Color.Gray
-        else -> Color.Gray
+        "Running" -> Color(0, 222, 112)
+        "Idle" -> Color(32, 148, 251)
+        "Charging" -> Color(254, 215, 9)
+        "Offline" -> Color(155, 160, 170)
+        else -> Color(155, 160, 170)
     }
 
     Chip(
@@ -62,7 +62,7 @@ fun RobotRow(robot: Robot, onClick: () -> Unit) {
         },
         onClick = onClick,
         colors = ChipDefaults.primaryChipColors(
-            backgroundColor = Color.DarkGray
+            backgroundColor = Color(36, 36, 36)
         ),
         shape = RoundedCornerShape(12.dp)
     )

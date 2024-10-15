@@ -24,14 +24,14 @@ fun ItemRow(location: Location, onClick: () -> Unit) {
     Chip(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 2.dp),
+            .padding(vertical = 4.dp),
         shape = RoundedCornerShape(12.dp),
         label = {
             Text(text = location.name, color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.W400,)
         },
         onClick = { onClick() },
         colors = ChipDefaults.primaryChipColors(
-            backgroundColor = Color.DarkGray
+            backgroundColor = Color(36, 36, 36)
         ),
         icon = {
             Icon(
