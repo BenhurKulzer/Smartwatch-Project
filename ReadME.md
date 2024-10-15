@@ -2,7 +2,7 @@
 
 A Standalone Swift & Kotlin demo application for watchOS & wearOS.
 
-![screenshot](https://raw.githubusercontent.com/BenhurKulzer/Smartwatch-Project/refs/heads/main/server/assets/video.mov)
+![screenshot](https://raw.githubusercontent.com/BenhurKulzer/Smartwatch-Project/refs/heads/main/server/assets/video.gif)
 
 ```(gRPC Conn Soon...)```
 
