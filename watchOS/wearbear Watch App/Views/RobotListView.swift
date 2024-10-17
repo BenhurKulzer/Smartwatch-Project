@@ -9,73 +9,50 @@ import SwiftUI
 
 struct RobotListView: View {
     let locationName: String
-    @ObservedObject var viewModel = RobotListViewModel()
-    @State private var selectedRobot: RobotModel? = nil
+    
+    @State private var robotCount: Int = 1
     @State private var showConfirmation: Bool = false
     
+    @Environment(\.presentationMode) var presentationMode
+
     var body: some View {
-        Group {
-            if viewModel.isLoading {
-                ProgressView("Loading...")
-                    .progressViewStyle(CircularProgressViewStyle())
-            } else {
-                List(viewModel.robots) { robot in
-                    Button(action: {
-                        selectedRobot = robot
-                        showConfirmation = true
-                    }) {
-                        HStack {
-                            Text(robot.name)
-                                .font(.headline)
-                            
-                            Spacer()
-                            
-                            Text("\(robot.battery)%")
-                                .font(.subheadline)
-
-                            Circle()
-                                .fill(circleColor(for: robot.status))
-                                .frame(width: 12, height: 12)
-                                .padding(.leading, 8)
-                        }
-                        .padding(.vertical, 8)
-                    }
-                }
-                .navigationTitle(locationName)
-                .sheet(isPresented: $showConfirmation) {
-                    if let robot = selectedRobot {
-                        ConfirmationView(robot: robot, locationName: locationName, onConfirm: {
-                            showConfirmation = false
-                        }, onCancel: {
-                            showConfirmation = false
-                        })
-                    } else {
-                        Text("Error on handle robot data, try again")
-                            .font(.headline)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                    }
-                }
+        VStack {
+            HStack {
+                Text("How many bears do you need?")
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
             }
+            .padding(.top, 20)
+            
+            Stepper("\(robotCount)", value: $robotCount, in: 1...5)
+                .padding(.top, 5)
+            
+            HStack {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.white)
+                        .fontWeight(.bold)
+                        .frame(width: 50, height: 50)
+                }
+                .background(Color.red)
+                .cornerRadius(24)
+                
+                Spacer(minLength: 24)
+                
+                NavigationLink(destination: SummaryView(robotCount: robotCount, locationName: locationName)) {
+                    Image(systemName: "checkmark")
+                        .foregroundColor(.white)
+                        .fontWeight(.bold)
+                        .frame(width: 50, height: 50)
+                }
+                .background(Color.green)
+                .cornerRadius(24)
+            }
+            .padding(.top, 5)
         }
-        .onAppear {
-            viewModel.loadRobots()
-        }
-    }
-    
-    private func circleColor(for status: String) -> Color {
-        switch status {
-            case "Running":
-                return .green
-            case "Idle":
-                return .blue
-            case "Offline":
-                return .gray
-            case "Charging":
-                return .yellow
-
-            default:
-                return .gray
-        }
+        .navigationTitle(locationName)
+        .padding()
     }
 }
