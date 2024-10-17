@@ -14,11 +14,11 @@ struct ItemListView: View {
         NavigationView {
             Group {
                 if viewModel.isLoading {
-                    ProgressView("Carregando locais...")
+                    ProgressView("Loading...")
                         .progressViewStyle(CircularProgressViewStyle())
                 } else {
                     List(viewModel.items) { item in
-                        NavigationLink(destination: RobotListView(locationName: item.name)) {
+                        NavigationLink(destination: RobotListView(locationName: item.name, locationId: item.id)) {
                             HStack {
                                 Image(systemName: "location.fill")
                                     .foregroundColor(.white)

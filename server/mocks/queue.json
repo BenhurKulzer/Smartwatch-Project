@@ -1,0 +1,12 @@
+[
+  {
+    "robotId": 2,
+    "locationId": 2,
+    "status": "Running"
+  },
+  {
+    "robotId": 3,
+    "locationId": 2,
+    "status": "Running"
+  }
+]

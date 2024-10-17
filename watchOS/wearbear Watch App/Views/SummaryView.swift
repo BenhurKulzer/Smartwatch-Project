@@ -9,9 +9,11 @@ import SwiftUI
 
 struct SummaryView: View {
     let robotCount: Int
+    let locationId: Int
     let locationName: String
     
     @Environment(\.presentationMode) var presentationMode
+    @StateObject private var viewModel = SummaryViewModel()
     
     @State private var progress: Double = 0.0
     @State private var isLoading: Bool = true
@@ -23,7 +25,7 @@ struct SummaryView: View {
                 .frame(width: 50, height: 50)
                 .padding(.top, 20)
             
-            Text("Sending \(robotCount) Bear to \(locationName)")
+            Text("Sending \(robotCount) \(robotCount == 1 ? "Bear" : "Bears") to \(locationName)")
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
             
@@ -35,6 +37,7 @@ struct SummaryView: View {
         }
         .onAppear {
             startProgress()
+            viewModel.sendRobot(locationId: locationId, robotCount: robotCount)
         }
         .navigationTitle(locationName)
         .navigationBarBackButtonHidden(true)

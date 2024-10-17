@@ -1,96 +1,114 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const robots = require('./mocks/robots.json');
-const locations = require('./mocks/locations.json');
-
-const queue = require('./queue');
+const robots = require('./robots.js'); // Importa a classe Robots
+const locations = require('./mocks/locations.json'); // Importa as localizações
+const queue = require('./queue.js'); // Importa a fila
 
 const app = express();
 app.use(bodyParser.json());
 
-// Function to check if there is any Idle robot
-function getAvailableRobot() {
-  return robots.robots.find(robot => robot.status === "Idle");
+// Função para registrar na fila
+function logQueueItem(robotId, locationId, status) {
+    const queueItem = { robotId, locationId, status };
+    queue.enqueue(queueItem);
 }
 
-// Updates the robot's status to "Running" and simulates sending it
-function sendRobotToLocation(robot, location) {
-  console.log(`${robot.name} is being sent to ${location}`);
-  
-  robot.status = "Running";
-  robot.battery -= 10;
+// Envia o robô para a localização
+function sendRobotToLocation(robot, locationId) {
+    const location = locations.find(loc => loc.id === locationId);
 
-  setTimeout(() => {
-    console.log(`${robot.name} has arrived at ${location}`);
-
-    robot.status = "Idle";
-
-    if (robot.battery <= 20) {
-      robot.status = "Charging";
-      
-      setTimeout(() => {
-        robot.battery = 100;
-        robot.status = "Idle";
-
-        console.log(`${robot.name} is fully charged and Idle`);
-      }, 3600000); // 1 hour to fully charge
+    if (!location) {
+        console.error(`Location with ID ${locationId} not found.`);
+        return;
     }
 
-    processQueue();
-  }, 60000); // 1 minute for the robot to arrive at the destination
+    console.log(`${robot.name} is being sent to ${location.name}`);
+
+    // Atualiza o status do robô para "Running" e diminui 10% da bateria
+    robots.updateRobotStatus(robot.id, "Running", -10);
+
+    // Registra o envio do robô na fila
+    logQueueItem(robot.id, locationId, "Running");
+
+    setTimeout(() => {
+        console.log(`${robot.name} has arrived at ${location.name}`);
+
+        // Atualiza o status para "Idle" após chegar à localização
+        robots.updateRobotStatus(robot.id, "Idle");
+
+        // Se a bateria estiver baixa, coloca o robô para carregar
+        if (robot.battery <= 20) {
+            robots.updateRobotStatus(robot.id, "Charging");
+
+            setTimeout(() => {
+                robots.updateRobotStatus(robot.id, "Idle", 100); // Recarga a bateria completamente
+                console.log(`${robot.name} is fully charged and Idle`);
+            }, 3600000); // 1 hora para recarregar totalmente
+        }
+
+        // Processa a próxima tarefa na fila
+        waitForIdleRobot();
+    }, 60000); // 1 minuto para o robô chegar ao destino
 }
 
-// Process the action queue
-function processQueue() {
-  if (!queue.isEmpty()) {
-    const { robot, location } = queue.dequeue();
-
-    if (robot.status === "Idle") {
-      sendRobotToLocation(robot, location);
+// Aguarda robôs disponíveis
+function waitForIdleRobot() {
+    if (queue.isEmpty()) {
+        console.log('Queue is empty, no robots to assign.');
+        return;
     }
-  }
+
+    const availableRobot = robots.getAvailableRobot(); // Verifica se há robô disponível
+
+    if (availableRobot) {
+        const nextInQueue = queue.dequeue(); // Remove o próximo item da fila
+        if (nextInQueue) {
+            sendRobotToLocation(availableRobot, nextInQueue.locationId);
+        }
+    } else {
+        console.log('No robots available, still waiting.');
+        setTimeout(waitForIdleRobot, 5000); // Verifica novamente em 5 segundos
+    }
 }
 
-// Wait until a robot is Idle
-function waitForIdleRobot(location) {
-  let availableRobot = getAvailableRobot();
-  
-  if (availableRobot) {
-    sendRobotToLocation(availableRobot, location);
-  } else {
-    console.log(`No robots are Idle. Waiting for one to become available.`);
-
-    setTimeout(() => waitForIdleRobot(location), 5000); // Check every 5 seconds
-  }
-}
-
-// Endpoint to get locations
+// Endpoint para obter localizações
 app.get('/api/locations', (req, res) => {
-  res.json(locations);
+    res.json(locations); // Retorna a lista de localizações
 });
 
-// Endpoint to send a robot to a location
-app.post('/api/sendRobot', (req, res) => {
-  const { location } = req.body;
-  const availableRobot = getAvailableRobot();
-  
-  if (availableRobot) {
-    sendRobotToLocation(availableRobot, location);
-
-    res.status(200).send(`${availableRobot.name} is being sent to ${location}.`);
-  } else {
-    queue.enqueue({ robot: availableRobot, location });
-
-    res.status(200).send(`All robots are busy. ${availableRobot.name} has been queued to go to ${location}.`);
-
-    waitForIdleRobot(location);
-  }
+// Endpoint para obter robôs
+app.get('/api/robots', (req, res) => {
+    res.json(robots.readRobots()); 
 });
 
-// Start the server
+// Endpoint para enviar um robô para uma localização
+app.post('/api/robots/call', (req, res) => {
+    const { locationId } = req.body;
+    const availableRobot = robots.getAvailableRobot(); // Verifica se há robôs disponíveis
+
+    if (availableRobot) {
+        // Se houver robô disponível, envia-o para a localização
+        sendRobotToLocation(availableRobot, locationId);
+        res.status(200).send(`${availableRobot.name} is being sent to location ID ${locationId}.`);
+    } else {
+        // Se não houver robô disponível, adiciona à fila
+        const queueItem = { locationId };
+        queue.enqueue(queueItem); // Adiciona à fila
+        res.status(200).send(`All robots are busy. Request for location ID ${locationId} has been enqueued.`);
+        waitForIdleRobot(); // Função para aguardar robô ficar disponível
+    }
+});
+
+// Endpoint para verificar a fila atual
+app.get('/api/queue', (req, res) => {
+    const currentQueue = queue.getQueue();
+    res.json(currentQueue);
+});
+
+// Inicia o servidor
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RobotListView: View {
     let locationName: String
+    let locationId: Int
     
     @State private var robotCount: Int = 1
     @State private var showConfirmation: Bool = false
@@ -41,7 +42,7 @@ struct RobotListView: View {
                 
                 Spacer(minLength: 24)
                 
-                NavigationLink(destination: SummaryView(robotCount: robotCount, locationName: locationName)) {
+                NavigationLink(destination: SummaryView(robotCount: robotCount, locationId: locationId, locationName: locationName)) {
                     Image(systemName: "checkmark")
                         .foregroundColor(.white)
                         .fontWeight(.bold)
