@@ -1,0 +1,11 @@
+[
+    { "id": 1, "name": "Robot A", "battery": 80, "status": "Running" },
+    { "id": 2, "name": "Robot B", "battery": 60, "status": "Idle" },
+    { "id": 3, "name": "Robot C", "battery": 40, "status": "Idle" },
+    { "id": 4, "name": "Robot D", "battery": 13, "status": "Running" },
+    { "id": 5, "name": "Robot E", "battery": 0, "status": "Offline" },
+    { "id": 6, "name": "Robot F", "battery": 90, "status": "Running" },
+    { "id": 7, "name": "Robot G", "battery": 100, "status": "Charging" },
+    { "id": 8, "name": "Robot H", "battery": 89, "status": "Idle" },
+    { "id": 9, "name": "Robot I", "battery": 32, "status": "Running" }
+]
