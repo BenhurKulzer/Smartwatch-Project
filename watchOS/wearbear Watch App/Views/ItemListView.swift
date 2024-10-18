@@ -25,7 +25,8 @@ struct ItemListView: View {
                                     Spacer()
 
                                     if viewModel.queueRequests.contains(item.id) {
-                                        LoadingGauge(number: 1)
+                                        let robotCount = viewModel.robotCounts[item.id] ?? 0
+                                        LoadingGauge(number: robotCount)
                                     }
                                 }
                             }

@@ -5,6 +5,7 @@ class ItemListViewModel: ObservableObject {
     @Published var items: [ItemModel] = []
     @Published var isLoading: Bool = false
     @Published var queueRequests: Set<Int> = []
+    @Published var robotCounts: [Int: Int] = [:]
     
     private var cancellables = Set<AnyCancellable>()
 
@@ -48,8 +49,17 @@ class ItemListViewModel: ObservableObject {
                 }
             }, receiveValue: { [weak self] queueItems in
                 self?.queueRequests = Set(queueItems.map { $0.locationId })
+                self?.calculateRobotCounts(from: queueItems)
             })
             .store(in: &cancellables)
+    }
+
+    private func calculateRobotCounts(from queueItems: [QueueItem]) {
+        robotCounts = [:]
+
+        for item in queueItems {
+            robotCounts[item.locationId, default: 0] += 1
+        }
     }
 
     func deleteItem(_ item: ItemModel) {
