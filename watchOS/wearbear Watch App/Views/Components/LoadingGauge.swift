@@ -15,24 +15,24 @@ struct LoadingGauge: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(lineWidth: 8)
-                .foregroundColor(.gray.opacity(0.3)) // Círculo de fundo
+                .stroke(lineWidth: 3)
+                .foregroundColor(.gray.opacity(0.3))
 
             Circle()
-                .trim(from: 0, to: 0.75) // Mostra 75% do círculo (ajuste conforme necessário)
-                .stroke(style: StrokeStyle(lineWidth: 8, lineCap: .round))
-                .foregroundColor(.green) // Cor do círculo carregando
+                .trim(from: 0, to: 0.75)
+                .stroke(style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                .foregroundColor(.green)
                 .rotationEffect(Angle(degrees: rotation))
                 .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false), value: rotation)
                 .onAppear {
-                    rotation = 360 // Inicia a rotação ao aparecer
+                    rotation = 360
                 }
 
             Text("\(number)")
-                .font(.title)
+                .font(.subheadline)
                 .fontWeight(.bold)
-                .foregroundColor(.white) // Cor do número no centro
+                .foregroundColor(.white)
         }
-        .frame(width: 60, height: 60) // Tamanho do gauge
+        .frame(width: 25, height: 25)
     }
 }

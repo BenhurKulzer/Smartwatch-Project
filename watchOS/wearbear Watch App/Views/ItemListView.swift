@@ -1,10 +1,3 @@
-//
-//  ItemListView.swift
-//  wearbear
-//
-//  Created by Benhur on 10/10/24.
-//
-
 import SwiftUI
 
 struct ItemListView: View {
@@ -27,6 +20,12 @@ struct ItemListView: View {
                                 Text(item.name)
                                     .padding()
                                     .cornerRadius(8)
+                                
+                                Spacer()
+
+                                if viewModel.queueRequests.contains(item.id) {
+                                    LoadingGauge(number: 1)
+                                }
                             }
                         }
                     }

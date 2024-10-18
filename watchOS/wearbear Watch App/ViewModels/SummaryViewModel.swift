@@ -16,7 +16,7 @@ class SummaryViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     
     func sendRobot(locationId: Int, robotCount: Int) {
-        guard let url = URL(string: "http://localhost:3000/api//robots/call") else { return }
+        guard let url = URL(string: "http://localhost:3000/api/robots/call") else { return } // Fixed URL
         
         let request = RobotRequest(locationId: locationId, robotCount: robotCount)
         
