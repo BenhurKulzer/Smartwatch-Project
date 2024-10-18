@@ -4,7 +4,7 @@ import Combine
 class ItemListViewModel: ObservableObject {
     @Published var items: [ItemModel] = []
     @Published var isLoading: Bool = false
-    @Published var queueRequests: Set<Int> = [] // Keep track of locations with active queue requests
+    @Published var queueRequests: Set<Int> = []
     
     private var cancellables = Set<AnyCancellable>()
 
@@ -47,10 +47,12 @@ class ItemListViewModel: ObservableObject {
                     print("Error fetching queue requests: \(error)")
                 }
             }, receiveValue: { [weak self] queueItems in
-                // Extract unique locationIds from the queueItems
                 self?.queueRequests = Set(queueItems.map { $0.locationId })
-                print("Locations with queue requests: \(self?.queueRequests)")
             })
             .store(in: &cancellables)
+    }
+
+    func deleteItem(_ item: ItemModel) {
+        print("Printing... \(item.id)")
     }
 }

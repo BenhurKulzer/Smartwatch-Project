@@ -1,11 +1,3 @@
-//
-//  SummaryViewModel.swift
-//  wearbear
-//
-//  Created by Benhur on 17/10/24.
-//
-
-
 import Foundation
 import Combine
 
@@ -16,7 +8,7 @@ class SummaryViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     
     func sendRobot(locationId: Int, robotCount: Int) {
-        guard let url = URL(string: "http://localhost:3000/api/robots/call") else { return } // Fixed URL
+        guard let url = URL(string: "http://localhost:3000/api/robots/call") else { return }
         
         let request = RobotRequest(locationId: locationId, robotCount: robotCount)
         
@@ -49,7 +41,6 @@ class SummaryViewModel: ObservableObject {
                     return
                 }
                 
-                // Processar a resposta se necessário
                 print("Robot sent successfully: \(String(data: data, encoding: .utf8) ?? "")")
             }
         }.resume()
