@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "robotId": 7,
+    "locationId": 2,
+    "status": "Running"
+  },
+  {
+    "robotId": 9,
+    "locationId": 1,
+    "status": "Running"
+  },
+  {
+    "robotId": 9,
+    "locationId": 2,
+    "status": "Running"
+  },
+  {
+    "robotId": 9,
+    "locationId": 1,
+    "status": "Running"
+  }
+]
