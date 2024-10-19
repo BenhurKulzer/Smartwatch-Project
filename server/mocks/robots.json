@@ -2,38 +2,38 @@
   {
     "id": 1,
     "name": "Robot A",
-    "battery": 30,
-    "status": "Running"
+    "battery": 100,
+    "status": "Idle"
   },
   {
     "id": 2,
     "name": "Robot B",
-    "battery": 40,
-    "status": "Running"
+    "battery": 100,
+    "status": "Idle"
   },
   {
     "id": 3,
     "name": "Robot C",
-    "battery": 60,
-    "status": "Running"
+    "battery": 100,
+    "status": "Idle"
   },
   {
     "id": 4,
     "name": "Robot D",
-    "battery": 80,
-    "status": "Running"
+    "battery": 100,
+    "status": "Idle"
   },
   {
     "id": 5,
     "name": "Robot E",
-    "battery": 90,
-    "status": "Running"
+    "battery": 100,
+    "status": "Idle"
   },
   {
     "id": 6,
     "name": "Robot F",
-    "battery": 90,
-    "status": "Running"
+    "battery": 100,
+    "status": "Idle"
   },
   {
     "id": 7,
