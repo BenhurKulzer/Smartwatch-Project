@@ -3,6 +3,8 @@ import SwiftUI
 struct ItemListView: View {
     @ObservedObject var viewModel = ItemListViewModel()
     @State private var path = NavigationPath()
+    @State private var showingConfirmation = false
+    @State private var selectedItemId: Int? = nil
     
     var body: some View {
         NavigationStack(path: $path) {
@@ -32,18 +34,36 @@ struct ItemListView: View {
                                 }
                             }
                             .swipeActions {
-                                Button {
-                                    viewModel.deleteItem(item)
-                                } label: {
-                                    Label("Delete", systemImage: "xmark")
+                                if viewModel.queueRequests.contains(item.id) { // Only show if in queueRequests
+                                    Button {
+                                        selectedItemId = item.id
+                                        showingConfirmation = true // Show confirmation action sheet
+                                    } label: {
+                                        Label("Cancel", systemImage: "xmark")
+                                    }
+                                    .tint(.red)
                                 }
-                                .tint(.red)
                             }
                         }
                     }
                     .navigationTitle("Locations")
                     .navigationBarBackButtonHidden(true)
                     .navigationBarTitleDisplayMode(.large)
+                    .actionSheet(isPresented: $showingConfirmation) {
+                        ActionSheet(title: Text(""),
+                                    message: Text("Do you want to cancel this robot request?"),
+                                    buttons: [
+                                        .destructive(Text("Cancel Request")) {
+                                            if let id = selectedItemId {
+                                                viewModel.cancelRobotRequest(locationId: id)
+                                            }
+                                            showingConfirmation = false
+                                        },
+                                        .cancel {
+                                            showingConfirmation = false
+                                        }
+                                    ])
+                    }
                 }
             }
         }

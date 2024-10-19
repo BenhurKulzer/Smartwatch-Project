@@ -65,4 +65,24 @@ class ItemListViewModel: ObservableObject {
     func deleteItem(_ item: ItemModel) {
         print("Printing... \(item.id)")
     }
+
+    func cancelRobotRequest(locationId: Int) {
+        guard let url = URL(string: "http://localhost:3000/api/robots/cancel") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = try? JSONEncoder().encode(["locationId": locationId])
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        URLSession.shared.dataTask(with: request) { [weak self] _, response, error in
+            if let error = error {
+                print("Error cancelling robot request: \(error)")
+                return
+            }
+            // Recarregar a lista de solicitações após o cancelamento
+            DispatchQueue.main.async {
+                self?.loadQueueRequests()
+            }
+        }.resume()
+    }
 }

@@ -8,19 +8,19 @@
   {
     "id": 2,
     "name": "Robot B",
-    "battery": 80,
-    "status": "Running"
+    "battery": 10,
+    "status": "Charging"
   },
   {
     "id": 3,
     "name": "Robot C",
-    "battery": 80,
+    "battery": 0,
     "status": "Idle"
   },
   {
     "id": 4,
     "name": "Robot D",
-    "battery": 100,
+    "battery": 90,
     "status": "Idle"
   },
   {
