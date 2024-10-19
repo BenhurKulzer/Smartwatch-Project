@@ -98,6 +98,27 @@ app.get('/api/queue', (req, res) => {
     res.json(currentQueue);
 });
 
+app.post('/api/robots/cancel', (req, res) => {
+    const { locationId } = req.body;
+    const currentQueue = queue.getQueue();
+    
+    const updatedQueue = currentQueue.filter(item => item.locationId !== locationId);
+    
+    if (currentQueue.length === updatedQueue.length) {
+        return res.status(404).send(`No request found for location ID ${locationId}.`);
+    }
+
+    queue.writeQueue(updatedQueue);
+    
+    const robotToUpdate = currentQueue.find(item => item.locationId === locationId);
+
+    if (robotToUpdate) {
+        robots.updateRobotStatus(robotToUpdate.robotId, 'Idle');
+    }
+
+    res.status(200).send(`Request for location ID ${locationId} has been canceled and robot status set to Idle.`);
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

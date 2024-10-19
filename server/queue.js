@@ -48,5 +48,6 @@ module.exports = {
     enqueue,
     dequeue,
     getQueue,
-    isEmpty
+    isEmpty,
+    writeQueue
 };

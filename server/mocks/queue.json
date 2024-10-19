@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "robotId": 2,
+    "locationId": 2,
+    "status": "Running"
+  }
+]
