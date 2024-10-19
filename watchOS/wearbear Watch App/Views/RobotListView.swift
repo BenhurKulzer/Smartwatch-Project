@@ -6,6 +6,7 @@ struct RobotListView: View {
     
     @State private var robotCount: Int = 1
     @State private var showConfirmation: Bool = false
+    @Binding var path: NavigationPath
     
     @Environment(\.presentationMode) var presentationMode
 
@@ -18,7 +19,7 @@ struct RobotListView: View {
             }
             .padding(.top, 20)
             
-            Stepper("\(robotCount)", value: $robotCount, in: 1...5)
+            Stepper("\(robotCount)", value: $robotCount, in: 1...1)
                 .padding(.top, 5)
             
             HStack {
@@ -32,10 +33,10 @@ struct RobotListView: View {
                 }
                 .background(Color.red)
                 .cornerRadius(24)
-                
+
                 Spacer(minLength: 24)
-                
-                NavigationLink(destination: SummaryView(robotCount: robotCount, locationId: locationId, locationName: locationName)) {
+
+                NavigationLink(destination: SummaryView(robotCount: robotCount, locationId: locationId, locationName: locationName, path: $path)) {
                     Image(systemName: "checkmark")
                         .foregroundColor(.white)
                         .fontWeight(.bold)

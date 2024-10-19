@@ -2,9 +2,10 @@ import SwiftUI
 
 struct ItemListView: View {
     @ObservedObject var viewModel = ItemListViewModel()
+    @State private var path = NavigationPath()
     
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $path) {
             Group {
                 if viewModel.isLoading {
                     ProgressView("Loading...")
@@ -12,7 +13,7 @@ struct ItemListView: View {
                 } else {
                     List {
                         ForEach(viewModel.items) { item in
-                            NavigationLink(destination: RobotListView(locationName: item.name, locationId: item.id)) {
+                            NavigationLink(destination: RobotListView(locationName: item.name, locationId: item.id, path: $path)) {
                                 HStack {
                                     Image(systemName: "location.fill")
                                         .foregroundColor(.white)
@@ -41,6 +42,8 @@ struct ItemListView: View {
                         }
                     }
                     .navigationTitle("Locations")
+                    .navigationBarBackButtonHidden(true)
+                    .navigationBarTitleDisplayMode(.large)
                 }
             }
         }

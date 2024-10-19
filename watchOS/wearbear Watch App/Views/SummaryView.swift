@@ -5,12 +5,10 @@ struct SummaryView: View {
     let locationId: Int
     let locationName: String
     
-    @Environment(\.presentationMode) var presentationMode
     @StateObject private var viewModel = SummaryViewModel()
-    
     @State private var progress: Double = 0.0
-    @State private var isLoading: Bool = true
-    
+    @Binding var path: NavigationPath
+
     var body: some View {
         VStack(spacing: 20) {
             ProgressView(value: progress, total: 1.0)
@@ -22,9 +20,7 @@ struct SummaryView: View {
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
             
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }) {
+            NavigationLink(destination: ItemListView()) {
                 Text("Close").foregroundColor(.white)
             }
         }
@@ -39,14 +35,12 @@ struct SummaryView: View {
     
     func startProgress() {
         progress = 0.0
-        isLoading = true
         
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             if self.progress < 1.0 {
                 self.progress += 0.02
             } else {
                 timer.invalidate()
-                isLoading = false
             }
         }
     }
