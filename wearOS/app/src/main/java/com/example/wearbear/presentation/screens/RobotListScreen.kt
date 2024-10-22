@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material3.Button
 import androidx.wear.compose.material3.ButtonDefaults
-import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.Slider
 import androidx.wear.compose.material3.Text
 import com.example.wearbear.ui.theme.CustomTheme
 
@@ -50,82 +50,72 @@ fun RobotListScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "How many bears you need on $locationName?",
+                text = "Sending $numberOfBears bears to $locationName?",
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp,
-                modifier = Modifier.padding(top = 16.dp)
+                fontSize = 16.sp,
+                modifier = Modifier.padding(top = 12.dp, bottom = 8.dp)
+            )
+
+            Slider(
+                value = numberOfBears,
+                onValueChange = { numberOfBears = it },
+                valueProgression = 0..5,
+                segmented = false
             )
 
             Row(
                 modifier = Modifier
-                    .padding(vertical = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    onClick = { if (numberOfBears > 1) numberOfBears-- },
-                    modifier = Modifier.size(32.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.outline
-                    )
-                ) {
-                    Text(text = "-")
-                }
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Text(
-                    text = numberOfBears.toString(),
-                    fontSize = 32.sp,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Button(
-                    onClick = { if (numberOfBears < 5) numberOfBears++ },
-                    modifier = Modifier.size(32.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.outline
-                    )
-                ) {
-                    Text(text = "+")
-                }
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Button(
                     onClick = { onBackPress() },
-                    shape = RoundedCornerShape(18.dp),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = CustomTheme.colors.reject
                     ),
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Close Button",
-                        tint = Color.White,
-                        modifier = Modifier.size(22.dp).padding(4.dp)
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close Button",
+                            tint = Color.White,
+                            modifier = Modifier.size(22.dp)
+                        )
+                    }
                 }
 
                 Button(
                     onClick = { },
-                    shape = RoundedCornerShape(18.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    enabled = numberOfBears > 0,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = CustomTheme.colors.accept
+                        containerColor = CustomTheme.colors.accept,
+                        disabledContainerColor = Color.LightGray
                     )
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Confirm Button",
-                        tint = Color.White,
-                        modifier = Modifier.size(22.dp)
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Confirm Button",
+                            tint = Color.White,
+                            modifier = Modifier.size(22.dp)
+                        )
+                    }
                 }
             }
         }

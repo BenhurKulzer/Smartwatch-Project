@@ -22,7 +22,7 @@ class RobotViewModel : ViewModel() {
 
     private val apiService: ApiRobotsService by lazy {
         Retrofit.Builder()
-            .baseUrl("http://192.168.1.11:3000/")
+            .baseUrl("http://192.168.1.10:3000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiRobotsService::class.java)
