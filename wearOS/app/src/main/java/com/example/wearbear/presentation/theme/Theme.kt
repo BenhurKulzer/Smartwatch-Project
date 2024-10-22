@@ -1,10 +1,8 @@
-// Theme.kt
 package com.example.wearbear.ui.theme
 
-import androidx.wear.compose.material.Colors
-import androidx.compose.runtime.Composable
-import androidx.wear.compose.material.MaterialTheme
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.wear.compose.material.*
 
 private val DarkColorPalette = Colors(
     primary = Color(0xFF6200EE),
@@ -15,13 +13,38 @@ private val DarkColorPalette = Colors(
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.White,
-    onSurface = Color.White
+    onSurface = Color.White,
 )
+
+data class CustomColors(
+    val accept: Color,
+    val reject: Color
+)
+
+val LocalCustomColors = staticCompositionLocalOf {
+    CustomColors(
+        accept = Color(0xFF5CD89F),
+        reject = Color(0xFFFF5C3E)
+    )
+}
 
 @Composable
 fun WearBearTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colors = DarkColorPalette,
-        content = content
+    val customColors = CustomColors(
+        accept = Color(0xFF5CD89F),
+        reject = Color(0xFFFF5C3E)
     )
+
+    CompositionLocalProvider(LocalCustomColors provides customColors) {
+        MaterialTheme(
+            colors = DarkColorPalette,
+            content = content
+        )
+    }
+}
+
+object CustomTheme {
+    val colors: CustomColors
+        @Composable
+        get() = LocalCustomColors.current
 }

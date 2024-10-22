@@ -1,30 +1,34 @@
 package com.example.wearbear.presentation.screens
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.*
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.wear.compose.material.*
-import androidx.wear.compose.material3.IconButton
-import com.example.wearbear.presentation.components.LoadingIndicator
-import com.example.wearbear.presentation.components.RobotRow
+
+import androidx.wear.compose.material.Icon
+import androidx.wear.compose.material3.Button
+import androidx.wear.compose.material3.ButtonDefaults
+import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.Text
+import com.example.wearbear.ui.theme.CustomTheme
+
 import com.example.wearbear.viewmodel.RobotViewModel
-import com.example.wearbear.model.Robot
 
 @Composable
 fun RobotListScreen(
@@ -32,139 +36,97 @@ fun RobotListScreen(
     robotViewModel: RobotViewModel = viewModel(),
     onBackPress: () -> Unit
 ) {
-    val robots by robotViewModel.robots.collectAsState()
-    val isLoading = robots.isEmpty()
+    var numberOfBears by remember { mutableStateOf(1) }
 
-    val listState = rememberLazyListState()
-
-    var selectedRobot by remember { mutableStateOf<Robot?>(null) }
-    var showDialog by remember { mutableStateOf(false) }
-
-    Scaffold(
-        timeText = { TimeText() },
-        positionIndicator = {
-            PositionIndicator(
-                lazyListState = listState
-            )
-        }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp),
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Text(
+                text = "How many bears you need on $locationName?",
+                textAlign = TextAlign.Center,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+
+            Row(
+                modifier = Modifier
+                    .padding(vertical = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                IconButton(
-                    onClick = onBackPress,
-                    modifier = Modifier
-                        .padding(vertical = 2.dp)
-                        .padding(top = 8.dp)
-                        .size(26.dp),
+                Button(
+                    onClick = { if (numberOfBears > 1) numberOfBears-- },
+                    modifier = Modifier.size(32.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.outline
+                    )
+                ) {
+                    Text(text = "-")
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Text(
+                    text = numberOfBears.toString(),
+                    fontSize = 32.sp,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Button(
+                    onClick = { if (numberOfBears < 5) numberOfBears++ },
+                    modifier = Modifier.size(32.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.outline
+                    )
+                ) {
+                    Text(text = "+")
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(
+                    onClick = { onBackPress() },
                     shape = RoundedCornerShape(18.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = CustomTheme.colors.reject
+                    ),
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back",
-                        modifier = Modifier.size(16.dp)
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Close Button",
+                        tint = Color.White,
+                        modifier = Modifier.size(22.dp).padding(4.dp)
                     )
                 }
-            }
 
-            if (isLoading) {
-                LoadingIndicator()
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    state = listState,
+                Button(
+                    onClick = { },
+                    shape = RoundedCornerShape(18.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = CustomTheme.colors.accept
+                    )
                 ) {
-                    item {
-                        Text(
-                            text = locationName,
-                            textAlign = TextAlign.Center,
-                            fontSize = 16.sp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 0.dp)
-                                .padding(bottom = 6.dp)
-                        )
-                    }
-
-                    items(robots) { robot ->
-                        RobotRow(robot = robot) {
-                            selectedRobot = robot
-                            showDialog = true
-                        }
-                    }
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Confirm Button",
+                        tint = Color.White,
+                        modifier = Modifier.size(22.dp)
+                    )
                 }
-            }
-
-            if (showDialog && selectedRobot != null) {
-                AlertDialog(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentHeight(align = Alignment.CenterVertically),
-                    backgroundColor = Color(0, 0, 0, 99),
-                    onDismissRequest = {
-                        showDialog = false
-                    },
-                    title = {
-                        Text(
-                            text = "Confirm send ${selectedRobot?.name} to $locationName?",
-                            textAlign = TextAlign.Center,
-                            color = Color.White,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    },
-                    buttons = {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 16.dp),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Button(
-                                onClick = {
-                                    showDialog = false
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = Color(255, 61, 47),
-                                )
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = "Close Button",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.width(16.dp))
-
-                            Button(
-                                onClick = {
-                                    showDialog = false
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = Color(0, 220, 90),
-                                )
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Check,
-                                    contentDescription = "Confirm Button",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
-                        }
-
-                    }
-                )
             }
         }
     }

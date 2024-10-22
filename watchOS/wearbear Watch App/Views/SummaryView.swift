@@ -7,6 +7,8 @@ struct SummaryView: View {
     
     @StateObject private var viewModel = SummaryViewModel()
     @State private var progress: Double = 0.0
+    @State private var navigateToItemList: Bool = false
+    
     @Binding var path: NavigationPath
 
     var body: some View {
@@ -20,7 +22,8 @@ struct SummaryView: View {
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
             
-            NavigationLink(destination: ItemListView()) {
+            NavigationLink(destination: ItemListView(), isActive: $navigateToItemList) {
+//            NavigationLink(destination: ItemListView()) {
                 Text("Close").foregroundColor(.white)
             }
         }
@@ -41,6 +44,7 @@ struct SummaryView: View {
                 self.progress += 0.02
             } else {
                 timer.invalidate()
+                navigateToItemList = true
             }
         }
     }

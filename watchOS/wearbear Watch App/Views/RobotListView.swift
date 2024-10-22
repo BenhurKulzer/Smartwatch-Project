@@ -15,6 +15,7 @@ struct RobotListView: View {
             HStack {
                 Text("How many bears do you need?")
                     .font(.headline)
+                    .lineLimit(nil)
                     .multilineTextAlignment(.center)
             }
             .padding(.top, 20)
