@@ -2,7 +2,9 @@ package com.example.wearbear.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
@@ -12,28 +14,34 @@ class SummaryViewModel : ViewModel() {
     fun callRobot(locationId: Int) {
         viewModelScope.launch {
             try {
-                val url = URL("http://192.168.1.9:3000/api/robots/call")
-                val connection = url.openConnection() as HttpURLConnection
-                connection.requestMethod = "POST"
-                connection.setRequestProperty("Content-Type", "application/json")
-                connection.doOutput = true
+                withContext(Dispatchers.IO) {
+                    val url = URL("http://192.168.1.6:3000/api/robots/call")
+                    val connection = (url.openConnection() as HttpURLConnection).apply {
+                        requestMethod = "POST"
+                        setRequestProperty("Content-Type", "application/json")
+                        doOutput = true
+                    }
 
-                val jsonParam = JSONObject()
-                jsonParam.put("locationId", locationId)
+                    val jsonParam = JSONObject().apply {
+                        put("locationId", locationId)
+                    }
 
-                val outputStreamWriter = OutputStreamWriter(connection.outputStream)
-                outputStreamWriter.write(jsonParam.toString())
-                outputStreamWriter.flush()
-                outputStreamWriter.close()
+                    OutputStreamWriter(connection.outputStream).use { writer ->
+                        writer.write(jsonParam.toString())
+                        writer.flush()
+                    }
 
-                val responseCode = connection.responseCode
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    println("Requisição bem-sucedida")
-                } else {
-                    println("Falha na requisição: $responseCode")
+                    val responseCode = connection.responseCode
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        println("Success: $responseCode")
+                    } else {
+                        println("Error: $responseCode")
+                    }
+
+                    connection.disconnect()
                 }
-                connection.disconnect()
             } catch (e: Exception) {
+                println("Error: ${e.message}")
                 e.printStackTrace()
             }
         }

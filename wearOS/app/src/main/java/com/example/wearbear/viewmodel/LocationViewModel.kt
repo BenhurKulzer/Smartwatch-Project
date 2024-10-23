@@ -11,19 +11,29 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 data class Location(val id: Int, val name: String)
+data class LocationQueue(val robotId: Int, val locationId: Int, val status: String)
 
 interface ApiService {
     @GET("api/locations")
     suspend fun getLocations(): List<Location>
+
+    @GET("api/queue")
+    suspend fun getQueue(): List<LocationQueue>
 }
 
 class LocationViewModel : ViewModel() {
     private val _locations = MutableStateFlow<List<Location>>(emptyList())
     val locations = _locations.asStateFlow()
 
+    private val _queueRequests = MutableStateFlow<Set<Int>>(emptySet())
+    val queue = _queueRequests.asStateFlow()
+
+    private val _robotCounts = MutableStateFlow<Map<Int, Int>>(emptyMap())
+    val robots = _robotCounts.asStateFlow()
+
     private val apiService: ApiService by lazy {
         Retrofit.Builder()
-            .baseUrl("http://192.168.1.9:3000/")
+            .baseUrl("http://192.168.1.6:3000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
@@ -31,6 +41,7 @@ class LocationViewModel : ViewModel() {
 
     init {
         fetchLocations()
+        fetchLocationQueue()
     }
 
     private fun fetchLocations() {
@@ -42,5 +53,29 @@ class LocationViewModel : ViewModel() {
                 Log.e("LocationViewModel", "Error fetching locations: ${e.message}")
             }
         }
+    }
+
+    fun fetchLocationQueue() {
+        viewModelScope.launch {
+            try {
+                val queueItems = apiService.getQueue()
+
+                _queueRequests.value = queueItems.map { it.locationId }.toSet()
+
+                calculateRobotCounts(queueItems)
+            } catch (e: Exception) {
+                Log.e("QueueViewModel", "Error fetching queue requests: ${e.message}")
+            }
+        }
+    }
+
+    private fun calculateRobotCounts(queueItems: List<LocationQueue>) {
+        val counts = mutableMapOf<Int, Int>()
+
+        for (item in queueItems) {
+            counts[item.locationId] = (counts[item.locationId] ?: 0) + 1
+        }
+
+        _robotCounts.value = counts
     }
 }
