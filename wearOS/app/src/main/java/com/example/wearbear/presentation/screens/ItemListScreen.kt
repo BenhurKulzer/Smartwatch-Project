@@ -41,7 +41,6 @@ fun ItemListScreen(
     val robots by locationViewModel.robots.collectAsState()
 
     val isLoading = locations.isEmpty()
-
     val listState = rememberLazyListState()
 
     Scaffold(
@@ -77,45 +76,54 @@ fun ItemListScreen(
                         )
                     }
                     items(locations) { location ->
-                        SwipeToDismissBox(
-                            onDismissed = { }
-                        ) { isBackground ->
-                            if (isBackground) {
-                                Button(
-                                    onClick = { },
-                                    shape = RoundedCornerShape(12.dp),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = CustomTheme.colors.reject
-                                    ),
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Check,
-                                        contentDescription = "Confirm Button",
-                                        tint = Color.White,
-                                        modifier = Modifier.size(22.dp)
+                        val robotCount = robots[location.id] ?: 0
+
+                        if (robotCount > 0) {
+                            // Exibe o item com swipe habilitado se robotCount for maior que 0
+                            SwipeToDismissBox(
+                                onDismissed = { }
+                            ) { isBackground ->
+                                if (isBackground) {
+                                    Button(
+                                        onClick = { },
+                                        shape = RoundedCornerShape(12.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = CustomTheme.colors.reject
+                                        ),
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Check,
+                                            contentDescription = "Confirm Button",
+                                            tint = Color.White,
+                                            modifier = Modifier.size(22.dp)
+                                        )
+
+                                        Spacer(modifier = Modifier.width(8.dp))
+
+                                        Text(
+                                            text = "Cancel Robot",
+                                            color = Color.White,
+                                            textAlign = TextAlign.Center,
+                                            fontSize = 16.sp,
+                                            modifier = Modifier.padding(top = 12.dp, bottom = 8.dp)
+                                        )
+                                    }
+                                } else {
+                                    ItemRow(
+                                        location = location,
+                                        counter = robotCount,
+                                        onClick = { onLocationClick(location.name, location.id) },
                                     )
-
-                                    Spacer(modifier = Modifier.width(8.dp))
-
-                                    Text(
-                                        text = "Cancel Robot",
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center,
-                                        fontSize = 16.sp,
-                                        modifier = Modifier.padding(top = 12.dp, bottom = 8.dp)
-                                    )
-
                                 }
-                            } else {
-                                val robotCount = robots[location.id] ?: 0
-
-                                ItemRow(
-                                    location = location,
-                                    counter = robotCount,
-                                    onClick = { onLocationClick(location.name, location.id) },
-                                )
                             }
+                        } else {
+                            // Exibe o item sem swipe se robotCount for 0
+                            ItemRow(
+                                location = location,
+                                counter = robotCount,
+                                onClick = { onLocationClick(location.name, location.id) },
+                            )
                         }
                     }
                 }
