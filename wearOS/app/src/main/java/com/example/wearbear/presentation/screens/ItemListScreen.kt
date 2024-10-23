@@ -43,6 +43,10 @@ fun ItemListScreen(
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
+    LaunchedEffect(Unit) {
+        locationViewModel.reloadData()
+    }
+
     Scaffold(
         timeText = { TimeText() },
         positionIndicator = {
