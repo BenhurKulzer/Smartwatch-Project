@@ -44,6 +44,11 @@ class LocationViewModel : ViewModel() {
         fetchLocationQueue()
     }
 
+    fun reloadData() {
+        fetchLocations()
+        fetchLocationQueue()
+    }
+
     private fun fetchLocations() {
         viewModelScope.launch {
             try {
@@ -55,7 +60,7 @@ class LocationViewModel : ViewModel() {
         }
     }
 
-    fun fetchLocationQueue() {
+    private fun fetchLocationQueue() {
         viewModelScope.launch {
             try {
                 val queueItems = apiService.getQueue()

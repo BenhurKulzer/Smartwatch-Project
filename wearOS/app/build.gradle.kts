@@ -67,6 +67,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
     implementation("androidx.wear.compose:compose-material3:1.0.0-alpha26")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.31.1-alpha")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
