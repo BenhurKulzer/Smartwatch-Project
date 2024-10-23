@@ -19,7 +19,7 @@ import com.example.wearbear.presentation.components.LoadingIndicator
 @Composable
 fun ItemListScreen(
     locationViewModel: LocationViewModel = viewModel(),
-    onLocationClick: (String) -> Unit
+    onLocationClick: (String, Int) -> Unit
 ) {
     val locations by locationViewModel.locations.collectAsState()
     val isLoading = locations.isEmpty()
@@ -54,14 +54,14 @@ fun ItemListScreen(
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 14.dp, horizontal = 12.dp)
-                                .padding(top = 18.dp)
+                                .padding(12.dp)
+                                .padding(top = 8.dp)
                         )
                     }
                     items(locations) { location ->
                         ItemRow(
                             location = location,
-                            onClick = { onLocationClick(location.name) },
+                            onClick = { onLocationClick(location.name, location.id) },
                         )
                     }
                 }
