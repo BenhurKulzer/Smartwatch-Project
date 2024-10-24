@@ -3,6 +3,7 @@ package com.example.wearbear.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,8 +11,11 @@ import kotlinx.coroutines.launch
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
+data class CancelRequest(val locationId: Int)
 data class Location(val id: Int, val name: String)
 data class LocationQueue(val robotId: Int, val locationId: Int, val status: String)
 
@@ -21,6 +25,9 @@ interface ApiService {
 
     @GET("api/queue")
     suspend fun getQueue(): List<LocationQueue>
+
+    @POST("api/robots/cancel")
+    suspend fun cancelRobotRequest(@Body cancelRequest: CancelRequest): Unit
 }
 
 class LocationViewModel : ViewModel() {
@@ -84,5 +91,18 @@ class LocationViewModel : ViewModel() {
         }
 
         _robotCounts.value = counts
+    }
+
+    fun cancelRobotRequest(locationId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                apiService.cancelRobotRequest(CancelRequest(locationId))
+                Log.d("LocationViewModel", "Robot request cancelled successfully")
+
+                fetchLocationQueue()
+            } catch (e: Exception) {
+                Log.e("LocationViewModel", "Error cancelling robot request: ${e.message}")
+            }
+        }
     }
 }

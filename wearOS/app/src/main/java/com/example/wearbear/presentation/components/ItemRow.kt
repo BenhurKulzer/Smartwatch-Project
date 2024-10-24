@@ -29,7 +29,7 @@ import com.example.wearbear.viewmodel.Location
 @Composable
 fun ItemRow(
     location: Location,
-    counter: Int,
+    counter: Int? = null,
     onClick: () -> Unit
 ) {
     Chip(
@@ -61,7 +61,7 @@ fun ItemRow(
                     )
                 }
 
-                if (counter > 0) {
+                if (counter != null && counter > 0) {
                     ProgressWithNumber(
                         number = counter,
                         modifier = Modifier.size(24.dp)
