@@ -2,10 +2,13 @@ package com.example.wearbear.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 import org.json.JSONObject
+
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL

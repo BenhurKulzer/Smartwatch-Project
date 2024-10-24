@@ -2,6 +2,7 @@ package com.example.wearbear.ui.theme
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+
 import androidx.wear.compose.material.*
 
 private val DarkColorPalette = Colors(
