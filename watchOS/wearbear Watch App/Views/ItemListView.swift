@@ -4,8 +4,8 @@ struct ItemListView: View {
     @ObservedObject var viewModel = ItemListViewModel()
     @State private var path = NavigationPath()
     @State private var showingConfirmation = false
-    @State private var selectedItemId: Int? = nil
-    
+    @State private var selectedItemId: String? = nil
+
     var body: some View {
         NavigationStack(path: $path) {
             Group {
@@ -14,29 +14,29 @@ struct ItemListView: View {
                         .progressViewStyle(CircularProgressViewStyle())
                 } else {
                     List {
-                        ForEach(viewModel.items) { item in
+                        ForEach(viewModel.items, id: \.id) { item in
                             NavigationLink(destination: RobotListView(locationName: item.name, locationId: item.id, path: $path)) {
                                 HStack {
                                     Image(systemName: "location.fill")
                                         .foregroundColor(.white)
                                         .padding(.trailing, 8)
-                                    
+
                                     Text(item.name)
                                         .padding()
                                         .cornerRadius(8)
-                                    
+
                                     Spacer()
 
-                                    if viewModel.queueRequests.contains(item.id) {
-                                        let robotCount = viewModel.robotCounts[item.id] ?? 0
+                                    if viewModel.queueRequests.contains(String(item.id)) {
+                                        let robotCount = viewModel.robotCounts[String(item.id)] ?? 0
                                         LoadingGauge(number: robotCount)
                                     }
                                 }
                             }
                             .swipeActions {
-                                if viewModel.queueRequests.contains(item.id) {
+                                if viewModel.queueRequests.contains(String(item.id)) {
                                     Button {
-                                        selectedItemId = item.id
+                                        selectedItemId = String(item.id)
                                         showingConfirmation = true
                                     } label: {
                                         Label("Cancel", systemImage: "xmark")

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.protobuf") version "0.9.2" apply false
 }
 
 android {
@@ -49,26 +50,35 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.gms:play-services-wearable:18.0.0")
+    implementation("io.grpc:grpc-okhttp")
+    implementation("io.grpc:grpc-protobuf-lite")
+    implementation("io.grpc:grpc-stub")
+    implementation("javax.annotation:javax.annotation-api")
+
+    implementation("com.google.android.gms:play-services-wearable")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.31.1-alpha")
+
+    implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material:material")
-    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    implementation("androidx.wear.compose:compose-material:1.1.2")
-    implementation("androidx.wear.compose:compose-foundation:1.1.2")
-    implementation("androidx.wear.compose:compose-navigation:1.1.2")
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation(platform("androidx.compose:compose-bom"))
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
     implementation("androidx.navigation:navigation-compose")
+
+    implementation("androidx.wear.compose:compose-material")
+    implementation("androidx.wear.compose:compose-foundation")
+    implementation("androidx.wear.compose:compose-navigation")
+    implementation("androidx.wear.compose:compose-material3")
+
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
-    implementation("androidx.wear.compose:compose-material3:1.0.0-alpha26")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.31.1-alpha")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
+
+    androidTestImplementation(platform("androidx.compose:compose-bom"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

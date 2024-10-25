@@ -1,48 +1,64 @@
 import Foundation
 import Combine
+import GRPC
+import NIO
+import SwiftProtobuf
 
 class SummaryViewModel: ObservableObject {
     @Published var progress: Double = 0.0
     @Published var isLoading: Bool = false
     @Published var isError: Bool = false
     @Published var errorMessage: String = ""
-    
+
+    private var client: Robotservice_RobotServiceNIOClient?
+    private let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+
+    init() {
+        setupClient()
+    }
+
+    deinit {
+        try? group.syncShutdownGracefully()
+    }
+
+    private func setupClient() {
+        let channel = ClientConnection.insecure(group: group)
+            .connect(host: "localhost", port: 50051)
+        client = Robotservice_RobotServiceNIOClient(channel: channel)
+        print("gRPC client initialized and connected to server.")
+    }
+
     func sendRobot(locationId: Int, robotCount: Int) {
-        guard let url = URL(string: "http://localhost:3000/api/robots/call") else { return }
+        var request = Robotservice_CallRequest()
+        request.locationID = String(locationId)  // Convert locationId to String if needed
         
-        let request = RobotRequest(locationId: locationId, robotCount: robotCount)
-        
-        guard let requestData = try? JSONEncoder().encode(request) else {
-            self.isError = true
-            self.errorMessage = "Failed to encode request data."
-            return
-        }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlRequest.httpBody = requestData
+        print("Preparing to send robot with the following details:")
+        print("Location ID: \(locationId)")
+        print("Robot Count: \(robotCount)")
+        print("Request Object: \(request)")
         
         isLoading = true
+        print("Setting isLoading to true.")
         
-        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+        client?.callRobot(request).response.whenComplete { [weak self] result in
             DispatchQueue.main.async {
+                guard let self = self else { return }
                 self.isLoading = false
-                
-                if let error = error {
+                print("Request completed. Setting isLoading to false.")
+
+                switch result {
+                case .success(let response):
+                    print("Robot sent successfully. Server response: \(response.message)")
+                case .failure(let error):
                     self.isError = true
                     self.errorMessage = "Failed to send robot: \(error.localizedDescription)"
-                    return
+                    print("Error sending robot: \(error.localizedDescription)")
                 }
                 
-                guard let data = data, let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                    self.isError = true
-                    self.errorMessage = "Server error. Please try again."
-                    return
-                }
-                
-                print("Robot sent successfully: \(String(data: data, encoding: .utf8) ?? "")")
+                print("Current State after request completion:")
+                print("isError: \(self.isError)")
+                print("errorMessage: \(self.errorMessage)")
             }
-        }.resume()
+        }
     }
 }

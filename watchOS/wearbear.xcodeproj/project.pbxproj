@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		550DCDD22CB73F9900F86C1C /* wearbear Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 550DCDD12CB73F9900F86C1C /* wearbear Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		55CFC3B72CCC208400F2770F /* CGRPCZlib in Frameworks */ = {isa = PBXBuildFile; productRef = 55CFC3B62CCC208400F2770F /* CGRPCZlib */; };
+		55CFC3B92CCC208400F2770F /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = 55CFC3B82CCC208400F2770F /* GRPC */; };
+		55CFC3BB2CCC208400F2770F /* GRPCReflectionService in Frameworks */ = {isa = PBXBuildFile; productRef = 55CFC3BA2CCC208400F2770F /* GRPCReflectionService */; };
+		55CFC3BD2CCC208400F2770F /* _GRPCCore in Frameworks */ = {isa = PBXBuildFile; productRef = 55CFC3BC2CCC208400F2770F /* _GRPCCore */; };
+		55CFC3BF2CCC208400F2770F /* _GRPCHTTP2Transport in Frameworks */ = {isa = PBXBuildFile; productRef = 55CFC3BE2CCC208400F2770F /* _GRPCHTTP2Transport */; };
+		55CFC3C12CCC208400F2770F /* _GRPCInProcessTransport in Frameworks */ = {isa = PBXBuildFile; productRef = 55CFC3C02CCC208400F2770F /* _GRPCInProcessTransport */; };
+		55CFC3C32CCC208400F2770F /* _GRPCProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = 55CFC3C22CCC208400F2770F /* _GRPCProtobuf */; };
+		55CFC3C52CCC208400F2770F /* protoc-gen-grpc-swift in Frameworks */ = {isa = PBXBuildFile; productRef = 55CFC3C42CCC208400F2770F /* protoc-gen-grpc-swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +86,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55CFC3C32CCC208400F2770F /* _GRPCProtobuf in Frameworks */,
+				55CFC3BB2CCC208400F2770F /* GRPCReflectionService in Frameworks */,
+				55CFC3BD2CCC208400F2770F /* _GRPCCore in Frameworks */,
+				55CFC3B92CCC208400F2770F /* GRPC in Frameworks */,
+				55CFC3C12CCC208400F2770F /* _GRPCInProcessTransport in Frameworks */,
+				55CFC3B72CCC208400F2770F /* CGRPCZlib in Frameworks */,
+				55CFC3C52CCC208400F2770F /* protoc-gen-grpc-swift in Frameworks */,
+				55CFC3BF2CCC208400F2770F /* _GRPCHTTP2Transport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +174,14 @@
 			);
 			name = "wearbear Watch App";
 			packageProductDependencies = (
+				55CFC3B62CCC208400F2770F /* CGRPCZlib */,
+				55CFC3B82CCC208400F2770F /* GRPC */,
+				55CFC3BA2CCC208400F2770F /* GRPCReflectionService */,
+				55CFC3BC2CCC208400F2770F /* _GRPCCore */,
+				55CFC3BE2CCC208400F2770F /* _GRPCHTTP2Transport */,
+				55CFC3C02CCC208400F2770F /* _GRPCInProcessTransport */,
+				55CFC3C22CCC208400F2770F /* _GRPCProtobuf */,
+				55CFC3C42CCC208400F2770F /* protoc-gen-grpc-swift */,
 			);
 			productName = "wearbear Watch App";
 			productReference = 550DCDD12CB73F9900F86C1C /* wearbear Watch App.app */;
@@ -244,6 +268,9 @@
 			);
 			mainGroup = 550DCDC42CB73F9900F86C1C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				55CFC3B12CCC055E00F2770F /* XCRemoteSwiftPackageReference "grpc-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 550DCDCC2CB73F9900F86C1C /* Products */;
 			projectDirPath = "";
@@ -666,6 +693,60 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		55CFC3B12CCC055E00F2770F /* XCRemoteSwiftPackageReference "grpc-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/grpc/grpc-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.24.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		55CFC3B62CCC208400F2770F /* CGRPCZlib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55CFC3B12CCC055E00F2770F /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = CGRPCZlib;
+		};
+		55CFC3B82CCC208400F2770F /* GRPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55CFC3B12CCC055E00F2770F /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = GRPC;
+		};
+		55CFC3BA2CCC208400F2770F /* GRPCReflectionService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55CFC3B12CCC055E00F2770F /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = GRPCReflectionService;
+		};
+		55CFC3BC2CCC208400F2770F /* _GRPCCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55CFC3B12CCC055E00F2770F /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = _GRPCCore;
+		};
+		55CFC3BE2CCC208400F2770F /* _GRPCHTTP2Transport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55CFC3B12CCC055E00F2770F /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = _GRPCHTTP2Transport;
+		};
+		55CFC3C02CCC208400F2770F /* _GRPCInProcessTransport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55CFC3B12CCC055E00F2770F /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = _GRPCInProcessTransport;
+		};
+		55CFC3C22CCC208400F2770F /* _GRPCProtobuf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55CFC3B12CCC055E00F2770F /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = _GRPCProtobuf;
+		};
+		55CFC3C42CCC208400F2770F /* protoc-gen-grpc-swift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55CFC3B12CCC055E00F2770F /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = "protoc-gen-grpc-swift";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 550DCDC52CB73F9900F86C1C /* Project object */;
 }
