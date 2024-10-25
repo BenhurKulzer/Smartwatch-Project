@@ -32,23 +32,24 @@ function sendRobotToLocation(robot, locationId) {
 
         robots.updateRobotStatus(robot.id, "Idle");
 
+        queue.writeQueue(queue.getQueue().filter(item => item.robotId !== robot.id));
+
         if (robot.battery <= 20) {
             robots.updateRobotStatus(robot.id, "Charging");
 
             setTimeout(() => {
                 robots.updateRobotStatus(robot.id, "Idle", 100);
                 console.log(`${robot.name} is fully charged and Idle`);
-            }, 3600000);
+            }, 3600000); // 1 hour to fully charge
         }
 
         waitForIdleRobot();
-    }, 60000);
+    }, 60000); // 1 minute to arrive
 }
 
 function waitForIdleRobot() {
     if (queue.isEmpty()) {
         console.log('Queue is empty, no robots to assign.');
-
         return;
     }
 
@@ -62,7 +63,7 @@ function waitForIdleRobot() {
         }
     } else {
         console.log('No robots available, still waiting.');
-        setTimeout(waitForIdleRobot, 5000);
+        setTimeout(waitForIdleRobot, 5000); // 5 seconds to check availability again
     }
 }
 
@@ -80,21 +81,20 @@ app.post('/api/robots/call', (req, res) => {
 
     if (availableRobot) {
         sendRobotToLocation(availableRobot, locationId);
-
+        
         res.status(200).send(`${availableRobot.name} is being sent to location ID ${locationId}.`);
     } else {
         const queueItem = { locationId };
         queue.enqueue(queueItem);
 
         res.status(200).send(`All robots are busy. Request for location ID ${locationId} has been enqueued.`);
-
+        
         waitForIdleRobot();
     }
 });
 
 app.get('/api/queue', (req, res) => {
     const currentQueue = queue.getQueue();
-
     res.json(currentQueue);
 });
 

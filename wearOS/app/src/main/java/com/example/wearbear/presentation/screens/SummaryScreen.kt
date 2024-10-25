@@ -32,7 +32,8 @@ fun SummaryScreen(
 
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
-        animationSpec = androidx.compose.animation.core.tween(durationMillis = 5000), label = ""
+        animationSpec = androidx.compose.animation.core.tween(durationMillis = 5000), label = "",
+        finishedListener = { onClose() }
     )
 
     LaunchedEffect(key1 = true) {

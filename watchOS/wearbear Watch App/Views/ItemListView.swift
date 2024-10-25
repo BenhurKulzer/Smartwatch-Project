@@ -34,10 +34,10 @@ struct ItemListView: View {
                                 }
                             }
                             .swipeActions {
-                                if viewModel.queueRequests.contains(item.id) { // Only show if in queueRequests
+                                if viewModel.queueRequests.contains(item.id) {
                                     Button {
                                         selectedItemId = item.id
-                                        showingConfirmation = true // Show confirmation action sheet
+                                        showingConfirmation = true
                                     } label: {
                                         Label("Cancel", systemImage: "xmark")
                                     }
@@ -45,6 +45,9 @@ struct ItemListView: View {
                                 }
                             }
                         }
+                    }
+                    .refreshable {
+                        viewModel.refreshData()
                     }
                     .navigationTitle("Locations")
                     .navigationBarBackButtonHidden(true)
@@ -65,6 +68,9 @@ struct ItemListView: View {
                                     ])
                     }
                 }
+            }
+            .onAppear {
+                viewModel.refreshData()
             }
         }
     }

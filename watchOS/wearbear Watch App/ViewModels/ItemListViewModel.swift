@@ -14,6 +14,11 @@ class ItemListViewModel: ObservableObject {
         loadQueueRequests()
     }
     
+    func refreshData() {
+        loadItems()
+        loadQueueRequests()
+    }
+
     func loadItems() {
         isLoading = true
 

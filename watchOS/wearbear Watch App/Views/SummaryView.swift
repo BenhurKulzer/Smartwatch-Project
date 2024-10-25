@@ -23,7 +23,6 @@ struct SummaryView: View {
                 .multilineTextAlignment(.center)
             
             NavigationLink(destination: ItemListView(), isActive: $navigateToItemList) {
-//            NavigationLink(destination: ItemListView()) {
                 Text("Close").foregroundColor(.white)
             }
         }
