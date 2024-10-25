@@ -34,3 +34,6 @@ cd server && node server.js
 - Open the project by the `.xcodeproj` file using xCode.
 - Check if you have the watchOS virtual device installed in your xCode.
 - Click on `Run` to install and run your application!
+
+### Running on a TizenOS device:
+Work in progress..
