@@ -2,25 +2,25 @@
   {
     "id": 1,
     "name": "Robot A",
-    "battery": 100,
+    "battery": 90,
     "status": "Idle"
   },
   {
     "id": 2,
     "name": "Robot B",
-    "battery": 100,
+    "battery": 90,
     "status": "Idle"
   },
   {
     "id": 3,
     "name": "Robot C",
-    "battery": 100,
+    "battery": 90,
     "status": "Idle"
   },
   {
     "id": 4,
     "name": "Robot D",
-    "battery": 100,
+    "battery": 90,
     "status": "Idle"
   },
   {

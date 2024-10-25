@@ -13,7 +13,6 @@ function writeRobots(robots) {
 
 function getAvailableRobot() {
     const robots = readRobots();
-
     return robots.find(robot => robot.status === 'Idle');
 }
 
@@ -28,7 +27,7 @@ function updateRobotStatus(robotId, newStatus, batteryChange = 0) {
         if (batteryChange !== 0) {
             robot.battery = Math.max(0, robot.battery + batteryChange);
         }
-        
+
         robots[robotIndex] = robot;
         writeRobots(robots);
     } else {

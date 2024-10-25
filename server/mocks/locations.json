@@ -1,14 +1,14 @@
 [
-    { "id": 1, "name": "StandBy" },
-    { "id": 2, "name": "Kitchen" },
-    { "id": 3, "name": "T 1" },
-    { "id": 4, "name": "T 2" },
-    { "id": 5, "name": "T 3" },
-    { "id": 6, "name": "T 4" },
-    { "id": 7, "name": "T 5" },
-    { "id": 8, "name": "T 6" },
-    { "id": 9, "name": "T 7" },
-    { "id": 10, "name": "T 8" },
-    { "id": 11, "name": "T 9" },
-    { "id": 12, "name": "Warehouse" }
+    { "id": "1", "name": "StandBy" },
+    { "id": "2", "name": "Kitchen" },
+    { "id": "3", "name": "T 1" },
+    { "id": "4", "name": "T 2" },
+    { "id": "5", "name": "T 3" },
+    { "id": "6", "name": "T 4" },
+    { "id": "7", "name": "T 5" },
+    { "id": "8", "name": "T 6" },
+    { "id": "9", "name": "T 7" },
+    { "id": "10", "name": "T 8" },
+    { "id": "11", "name": "T 9" },
+    { "id": "12", "name": "Warehouse" }
 ]
