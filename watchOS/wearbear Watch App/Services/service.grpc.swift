@@ -26,6 +26,11 @@ internal protocol Robotservice_RobotServiceClientProtocol: GRPCClient {
     callOptions: CallOptions?
   ) -> UnaryCall<Robotservice_Empty, Robotservice_RobotList>
 
+  func getQueue(
+    _ request: Robotservice_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Robotservice_Empty, Robotservice_QueueList>
+
   func callRobot(
     _ request: Robotservice_CallRequest,
     callOptions: CallOptions?
@@ -35,11 +40,6 @@ internal protocol Robotservice_RobotServiceClientProtocol: GRPCClient {
     _ request: Robotservice_CancelRequest,
     callOptions: CallOptions?
   ) -> UnaryCall<Robotservice_CancelRequest, Robotservice_CancelResponse>
-
-  func queueStream(
-    callOptions: CallOptions?,
-    handler: @escaping (Robotservice_QueueResponse) -> Void
-  ) -> BidirectionalStreamingCall<Robotservice_QueueRequest, Robotservice_QueueResponse>
 }
 
 extension Robotservice_RobotServiceClientProtocol {
@@ -83,6 +83,24 @@ extension Robotservice_RobotServiceClientProtocol {
     )
   }
 
+  /// Unary call to GetQueue
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to GetQueue.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func getQueue(
+    _ request: Robotservice_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Robotservice_Empty, Robotservice_QueueList> {
+    return self.makeUnaryCall(
+      path: Robotservice_RobotServiceClientMetadata.Methods.getQueue.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetQueueInterceptors() ?? []
+    )
+  }
+
   /// Unary call to CallRobot
   ///
   /// - Parameters:
@@ -116,27 +134,6 @@ extension Robotservice_RobotServiceClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCancelCallInterceptors() ?? []
-    )
-  }
-
-  /// Bidirectional streaming call to QueueStream
-  ///
-  /// Callers should use the `send` method on the returned object to send messages
-  /// to the server. The caller should send an `.end` after the final message has been sent.
-  ///
-  /// - Parameters:
-  ///   - callOptions: Call options.
-  ///   - handler: A closure called when each response is received from the server.
-  /// - Returns: A `ClientStreamingCall` with futures for the metadata and status.
-  internal func queueStream(
-    callOptions: CallOptions? = nil,
-    handler: @escaping (Robotservice_QueueResponse) -> Void
-  ) -> BidirectionalStreamingCall<Robotservice_QueueRequest, Robotservice_QueueResponse> {
-    return self.makeBidirectionalStreamingCall(
-      path: Robotservice_RobotServiceClientMetadata.Methods.queueStream.path,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeQueueStreamInterceptors() ?? [],
-      handler: handler
     )
   }
 }
@@ -213,6 +210,11 @@ internal protocol Robotservice_RobotServiceAsyncClientProtocol: GRPCClient {
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<Robotservice_Empty, Robotservice_RobotList>
 
+  func makeGetQueueCall(
+    _ request: Robotservice_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Robotservice_Empty, Robotservice_QueueList>
+
   func makeCallRobotCall(
     _ request: Robotservice_CallRequest,
     callOptions: CallOptions?
@@ -222,10 +224,6 @@ internal protocol Robotservice_RobotServiceAsyncClientProtocol: GRPCClient {
     _ request: Robotservice_CancelRequest,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<Robotservice_CancelRequest, Robotservice_CancelResponse>
-
-  func makeQueueStreamCall(
-    callOptions: CallOptions?
-  ) -> GRPCAsyncBidirectionalStreamingCall<Robotservice_QueueRequest, Robotservice_QueueResponse>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -262,6 +260,18 @@ extension Robotservice_RobotServiceAsyncClientProtocol {
     )
   }
 
+  internal func makeGetQueueCall(
+    _ request: Robotservice_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Robotservice_Empty, Robotservice_QueueList> {
+    return self.makeAsyncUnaryCall(
+      path: Robotservice_RobotServiceClientMetadata.Methods.getQueue.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetQueueInterceptors() ?? []
+    )
+  }
+
   internal func makeCallRobotCall(
     _ request: Robotservice_CallRequest,
     callOptions: CallOptions? = nil
@@ -283,16 +293,6 @@ extension Robotservice_RobotServiceAsyncClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCancelCallInterceptors() ?? []
-    )
-  }
-
-  internal func makeQueueStreamCall(
-    callOptions: CallOptions? = nil
-  ) -> GRPCAsyncBidirectionalStreamingCall<Robotservice_QueueRequest, Robotservice_QueueResponse> {
-    return self.makeAsyncBidirectionalStreamingCall(
-      path: Robotservice_RobotServiceClientMetadata.Methods.queueStream.path,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeQueueStreamInterceptors() ?? []
     )
   }
 }
@@ -323,6 +323,18 @@ extension Robotservice_RobotServiceAsyncClientProtocol {
     )
   }
 
+  internal func getQueue(
+    _ request: Robotservice_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> Robotservice_QueueList {
+    return try await self.performAsyncUnaryCall(
+      path: Robotservice_RobotServiceClientMetadata.Methods.getQueue.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetQueueInterceptors() ?? []
+    )
+  }
+
   internal func callRobot(
     _ request: Robotservice_CallRequest,
     callOptions: CallOptions? = nil
@@ -344,30 +356,6 @@ extension Robotservice_RobotServiceAsyncClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCancelCallInterceptors() ?? []
-    )
-  }
-
-  internal func queueStream<RequestStream>(
-    _ requests: RequestStream,
-    callOptions: CallOptions? = nil
-  ) -> GRPCAsyncResponseStream<Robotservice_QueueResponse> where RequestStream: Sequence, RequestStream.Element == Robotservice_QueueRequest {
-    return self.performAsyncBidirectionalStreamingCall(
-      path: Robotservice_RobotServiceClientMetadata.Methods.queueStream.path,
-      requests: requests,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeQueueStreamInterceptors() ?? []
-    )
-  }
-
-  internal func queueStream<RequestStream>(
-    _ requests: RequestStream,
-    callOptions: CallOptions? = nil
-  ) -> GRPCAsyncResponseStream<Robotservice_QueueResponse> where RequestStream: AsyncSequence & Sendable, RequestStream.Element == Robotservice_QueueRequest {
-    return self.performAsyncBidirectionalStreamingCall(
-      path: Robotservice_RobotServiceClientMetadata.Methods.queueStream.path,
-      requests: requests,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeQueueStreamInterceptors() ?? []
     )
   }
 }
@@ -397,14 +385,14 @@ internal protocol Robotservice_RobotServiceClientInterceptorFactoryProtocol: Sen
   /// - Returns: Interceptors to use when invoking 'getRobots'.
   func makeGetRobotsInterceptors() -> [ClientInterceptor<Robotservice_Empty, Robotservice_RobotList>]
 
+  /// - Returns: Interceptors to use when invoking 'getQueue'.
+  func makeGetQueueInterceptors() -> [ClientInterceptor<Robotservice_Empty, Robotservice_QueueList>]
+
   /// - Returns: Interceptors to use when invoking 'callRobot'.
   func makeCallRobotInterceptors() -> [ClientInterceptor<Robotservice_CallRequest, Robotservice_CallResponse>]
 
   /// - Returns: Interceptors to use when invoking 'cancelCall'.
   func makeCancelCallInterceptors() -> [ClientInterceptor<Robotservice_CancelRequest, Robotservice_CancelResponse>]
-
-  /// - Returns: Interceptors to use when invoking 'queueStream'.
-  func makeQueueStreamInterceptors() -> [ClientInterceptor<Robotservice_QueueRequest, Robotservice_QueueResponse>]
 }
 
 internal enum Robotservice_RobotServiceClientMetadata {
@@ -414,9 +402,9 @@ internal enum Robotservice_RobotServiceClientMetadata {
     methods: [
       Robotservice_RobotServiceClientMetadata.Methods.getLocations,
       Robotservice_RobotServiceClientMetadata.Methods.getRobots,
+      Robotservice_RobotServiceClientMetadata.Methods.getQueue,
       Robotservice_RobotServiceClientMetadata.Methods.callRobot,
       Robotservice_RobotServiceClientMetadata.Methods.cancelCall,
-      Robotservice_RobotServiceClientMetadata.Methods.queueStream,
     ]
   )
 
@@ -433,6 +421,12 @@ internal enum Robotservice_RobotServiceClientMetadata {
       type: GRPCCallType.unary
     )
 
+    internal static let getQueue = GRPCMethodDescriptor(
+      name: "GetQueue",
+      path: "/robotservice.RobotService/GetQueue",
+      type: GRPCCallType.unary
+    )
+
     internal static let callRobot = GRPCMethodDescriptor(
       name: "CallRobot",
       path: "/robotservice.RobotService/CallRobot",
@@ -443,12 +437,6 @@ internal enum Robotservice_RobotServiceClientMetadata {
       name: "CancelCall",
       path: "/robotservice.RobotService/CancelCall",
       type: GRPCCallType.unary
-    )
-
-    internal static let queueStream = GRPCMethodDescriptor(
-      name: "QueueStream",
-      path: "/robotservice.RobotService/QueueStream",
-      type: GRPCCallType.bidirectionalStreaming
     )
   }
 }
@@ -461,11 +449,11 @@ internal protocol Robotservice_RobotServiceProvider: CallHandlerProvider {
 
   func getRobots(request: Robotservice_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Robotservice_RobotList>
 
+  func getQueue(request: Robotservice_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Robotservice_QueueList>
+
   func callRobot(request: Robotservice_CallRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Robotservice_CallResponse>
 
   func cancelCall(request: Robotservice_CancelRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Robotservice_CancelResponse>
-
-  func queueStream(context: StreamingResponseCallContext<Robotservice_QueueResponse>) -> EventLoopFuture<(StreamEvent<Robotservice_QueueRequest>) -> Void>
 }
 
 extension Robotservice_RobotServiceProvider {
@@ -498,6 +486,15 @@ extension Robotservice_RobotServiceProvider {
         userFunction: self.getRobots(request:context:)
       )
 
+    case "GetQueue":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Robotservice_Empty>(),
+        responseSerializer: ProtobufSerializer<Robotservice_QueueList>(),
+        interceptors: self.interceptors?.makeGetQueueInterceptors() ?? [],
+        userFunction: self.getQueue(request:context:)
+      )
+
     case "CallRobot":
       return UnaryServerHandler(
         context: context,
@@ -514,15 +511,6 @@ extension Robotservice_RobotServiceProvider {
         responseSerializer: ProtobufSerializer<Robotservice_CancelResponse>(),
         interceptors: self.interceptors?.makeCancelCallInterceptors() ?? [],
         userFunction: self.cancelCall(request:context:)
-      )
-
-    case "QueueStream":
-      return BidirectionalStreamingServerHandler(
-        context: context,
-        requestDeserializer: ProtobufDeserializer<Robotservice_QueueRequest>(),
-        responseSerializer: ProtobufSerializer<Robotservice_QueueResponse>(),
-        interceptors: self.interceptors?.makeQueueStreamInterceptors() ?? [],
-        observerFactory: self.queueStream(context:)
       )
 
     default:
@@ -547,6 +535,11 @@ internal protocol Robotservice_RobotServiceAsyncProvider: CallHandlerProvider, S
     context: GRPCAsyncServerCallContext
   ) async throws -> Robotservice_RobotList
 
+  func getQueue(
+    request: Robotservice_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Robotservice_QueueList
+
   func callRobot(
     request: Robotservice_CallRequest,
     context: GRPCAsyncServerCallContext
@@ -556,12 +549,6 @@ internal protocol Robotservice_RobotServiceAsyncProvider: CallHandlerProvider, S
     request: Robotservice_CancelRequest,
     context: GRPCAsyncServerCallContext
   ) async throws -> Robotservice_CancelResponse
-
-  func queueStream(
-    requestStream: GRPCAsyncRequestStream<Robotservice_QueueRequest>,
-    responseStream: GRPCAsyncResponseStreamWriter<Robotservice_QueueResponse>,
-    context: GRPCAsyncServerCallContext
-  ) async throws
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -601,6 +588,15 @@ extension Robotservice_RobotServiceAsyncProvider {
         wrapping: { try await self.getRobots(request: $0, context: $1) }
       )
 
+    case "GetQueue":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Robotservice_Empty>(),
+        responseSerializer: ProtobufSerializer<Robotservice_QueueList>(),
+        interceptors: self.interceptors?.makeGetQueueInterceptors() ?? [],
+        wrapping: { try await self.getQueue(request: $0, context: $1) }
+      )
+
     case "CallRobot":
       return GRPCAsyncServerHandler(
         context: context,
@@ -619,15 +615,6 @@ extension Robotservice_RobotServiceAsyncProvider {
         wrapping: { try await self.cancelCall(request: $0, context: $1) }
       )
 
-    case "QueueStream":
-      return GRPCAsyncServerHandler(
-        context: context,
-        requestDeserializer: ProtobufDeserializer<Robotservice_QueueRequest>(),
-        responseSerializer: ProtobufSerializer<Robotservice_QueueResponse>(),
-        interceptors: self.interceptors?.makeQueueStreamInterceptors() ?? [],
-        wrapping: { try await self.queueStream(requestStream: $0, responseStream: $1, context: $2) }
-      )
-
     default:
       return nil
     }
@@ -644,6 +631,10 @@ internal protocol Robotservice_RobotServiceServerInterceptorFactoryProtocol: Sen
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeGetRobotsInterceptors() -> [ServerInterceptor<Robotservice_Empty, Robotservice_RobotList>]
 
+  /// - Returns: Interceptors to use when handling 'getQueue'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeGetQueueInterceptors() -> [ServerInterceptor<Robotservice_Empty, Robotservice_QueueList>]
+
   /// - Returns: Interceptors to use when handling 'callRobot'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeCallRobotInterceptors() -> [ServerInterceptor<Robotservice_CallRequest, Robotservice_CallResponse>]
@@ -651,10 +642,6 @@ internal protocol Robotservice_RobotServiceServerInterceptorFactoryProtocol: Sen
   /// - Returns: Interceptors to use when handling 'cancelCall'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeCancelCallInterceptors() -> [ServerInterceptor<Robotservice_CancelRequest, Robotservice_CancelResponse>]
-
-  /// - Returns: Interceptors to use when handling 'queueStream'.
-  ///   Defaults to calling `self.makeInterceptors()`.
-  func makeQueueStreamInterceptors() -> [ServerInterceptor<Robotservice_QueueRequest, Robotservice_QueueResponse>]
 }
 
 internal enum Robotservice_RobotServiceServerMetadata {
@@ -664,9 +651,9 @@ internal enum Robotservice_RobotServiceServerMetadata {
     methods: [
       Robotservice_RobotServiceServerMetadata.Methods.getLocations,
       Robotservice_RobotServiceServerMetadata.Methods.getRobots,
+      Robotservice_RobotServiceServerMetadata.Methods.getQueue,
       Robotservice_RobotServiceServerMetadata.Methods.callRobot,
       Robotservice_RobotServiceServerMetadata.Methods.cancelCall,
-      Robotservice_RobotServiceServerMetadata.Methods.queueStream,
     ]
   )
 
@@ -683,6 +670,12 @@ internal enum Robotservice_RobotServiceServerMetadata {
       type: GRPCCallType.unary
     )
 
+    internal static let getQueue = GRPCMethodDescriptor(
+      name: "GetQueue",
+      path: "/robotservice.RobotService/GetQueue",
+      type: GRPCCallType.unary
+    )
+
     internal static let callRobot = GRPCMethodDescriptor(
       name: "CallRobot",
       path: "/robotservice.RobotService/CallRobot",
@@ -693,12 +686,6 @@ internal enum Robotservice_RobotServiceServerMetadata {
       name: "CancelCall",
       path: "/robotservice.RobotService/CancelCall",
       type: GRPCCallType.unary
-    )
-
-    internal static let queueStream = GRPCMethodDescriptor(
-      name: "QueueStream",
-      path: "/robotservice.RobotService/QueueStream",
-      type: GRPCCallType.bidirectionalStreaming
     )
   }
 }

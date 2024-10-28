@@ -26,6 +26,11 @@ function getRobots(call, callback) {
     callback(null, { robots: robots.readRobots() });
 }
 
+function getQueue(call, callback) {
+    const currentQueue = queue.getQueue();
+    callback(null, { queues: currentQueue });
+}
+
 // Função para enviar um robô para uma localização
 function callRobot(call, callback) {
     const { locationId } = call.request;
@@ -94,7 +99,6 @@ function sendRobotToLocation(robot, locationId) {
     }, 60000); // Simulação de 1 minuto de viagem
 }
 
-
 function waitForIdleRobot() {
     if (queue.isEmpty()) return;
 
@@ -109,27 +113,14 @@ function waitForIdleRobot() {
     }
 }
 
-// Implementação do streaming bidirecional para a fila
-function queueStream(call) {
-    call.on('data', (queueRequest) => {
-        const { robotId, locationId, status } = queueRequest;
-        queue.enqueue({ robotId, locationId, status });
-        call.write({ message: `Queued robot ${robotId} for location ${locationId}` });
-    });
-
-    call.on('end', () => {
-        call.end();
-    });
-}
-
 // Iniciar o servidor gRPC
 const server = new grpc.Server();
 server.addService(robotServiceProto.RobotService.service, {
     GetLocations: getLocations,
     GetRobots: getRobots,
+    GetQueue: getQueue,
     CallRobot: callRobot,
     CancelCall: cancelCall,
-    QueueStream: queueStream
 });
 
 server.bindAsync('0.0.0.0:50051', grpc.ServerCredentials.createInsecure(), () => {
