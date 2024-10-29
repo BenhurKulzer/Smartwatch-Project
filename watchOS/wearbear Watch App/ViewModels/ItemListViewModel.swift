@@ -10,13 +10,12 @@ class ItemListViewModel: ObservableObject {
     @Published var queueRequests: Set<String> = []
     @Published var robotCounts: [String: Int] = [:]
 
-    private var cancellables = Set<AnyCancellable>()
     private let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-    private var client: Robotservice_RobotServiceNIOClient?  // Atualizado para Robotservice_RobotServiceNIOClient
-
+    private var client: Robotservice_RobotServiceNIOClient?
+    
     init() {
         setupClient()
-        loadItems()
+        refreshData()
     }
 
     deinit {
@@ -26,54 +25,75 @@ class ItemListViewModel: ObservableObject {
     private func setupClient() {
         let channel = ClientConnection.insecure(group: group)
             .connect(host: "localhost", port: 50051)
-        client = Robotservice_RobotServiceNIOClient(channel: channel)  // Atualizado para NIOClient
+        client = Robotservice_RobotServiceNIOClient(channel: channel)
     }
 
     func refreshData() {
         loadItems()
+        loadQueueRequests()
     }
 
     func loadItems() {
         isLoading = true
-        var request = Robotservice_Empty()  // Usar o tipo gerado para o request
+        var request = Robotservice_Empty()
+        
+        client?.getLocations(request).response.whenComplete { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    self?.items = response.locations.compactMap {
+                        guard let intId = Int($0.id) else { return nil }
+                        return ItemModel(id: intId, name: $0.name)
+                    }
+                    self?.isLoading = false
+                case .failure(let error):
+                    print("Failed to load locations: \(error)")
+                    self?.isLoading = false
+                }
+            }
+        }
+    }
 
-        client?.getLocations(request).response
+    func loadQueueRequests() {
+        let request = Robotservice_Empty()
+        
+        client?.getQueue(request).response
             .whenComplete { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let response):
-                        self?.items = response.locations.compactMap {
-                            if let intId = Int($0.id) {
-                                return ItemModel(id: intId, name: $0.name)
-                            } else {
-                                print("Failed to convert id '\($0.id)' to Int")
-                                return nil
-                            }
-                        }
-                        self?.isLoading = false
+                        self?.updateRobotCounts(from: response.queues)
                     case .failure(let error):
-                        print("Failed to load locations: \(error)")
-                        self?.isLoading = false
+                        print("Failed to load queue requests: \(error)")
                     }
                 }
             }
     }
 
+    private func updateRobotCounts(from queues: [Robotservice_Queue]) {
+        robotCounts = [:]
+        
+        for queue in queues {
+            let locationId = queue.locationID
+            robotCounts[locationId, default: 0] += 1
+        }
+    }
 
     func cancelRobotRequest(locationId: String) {
         var request = Robotservice_CancelRequest()
         request.locationID = locationId
 
-        client?.cancelCall(request).response
-            .whenComplete { result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let response):
-                        print("Cancelled request: \(response.message)")
-                    case .failure(let error):
-                        print("Failed to cancel robot request: \(error)")
-                    }
+        client?.cancelCall(request).response.whenComplete { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print("Cancelled request: \(response.message)")
+                    self.queueRequests.remove(locationId)
+                    self.robotCounts[locationId] = 0
+                case .failure(let error):
+                    print("Failed to cancel robot request: \(error)")
                 }
             }
+        }
     }
 }

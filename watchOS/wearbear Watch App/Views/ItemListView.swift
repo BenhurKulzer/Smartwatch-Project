@@ -27,14 +27,13 @@ struct ItemListView: View {
 
                                     Spacer()
 
-                                    if viewModel.queueRequests.contains(String(item.id)) {
-                                        let robotCount = viewModel.robotCounts[String(item.id)] ?? 0
+                                    if let robotCount = viewModel.robotCounts[String(item.id)], robotCount > 0 {
                                         LoadingGauge(number: robotCount)
                                     }
                                 }
                             }
                             .swipeActions {
-                                if viewModel.queueRequests.contains(String(item.id)) {
+                                if let robotCount = viewModel.robotCounts[String(item.id)], robotCount > 0 {
                                     Button {
                                         selectedItemId = String(item.id)
                                         showingConfirmation = true

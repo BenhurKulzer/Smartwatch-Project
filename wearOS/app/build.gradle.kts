@@ -54,6 +54,7 @@ dependencies {
     implementation("io.grpc:grpc-protobuf-lite")
     implementation("io.grpc:grpc-stub")
     implementation("javax.annotation:javax.annotation-api")
+    implementation("io.github.cdimascio:dotenv-kotlin:6.3.1")
 
     implementation("com.google.android.gms:play-services-wearable")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.31.1-alpha")

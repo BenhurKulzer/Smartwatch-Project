@@ -42,7 +42,7 @@ class LocationViewModel : ViewModel() {
 
     private val apiService: ApiService by lazy {
         Retrofit.Builder()
-            .baseUrl("http://192.168.1.6:3000/")
+            .baseUrl("${System.getenv("SERVER_ADDRESS")}/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
