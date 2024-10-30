@@ -8,7 +8,7 @@ struct SummaryView: View {
     @StateObject private var viewModel = SummaryViewModel()
     @State private var progress: Double = 0.0
     @State private var navigateToItemList: Bool = false
-    
+
     @Binding var path: NavigationPath
 
     var body: some View {
@@ -21,10 +21,6 @@ struct SummaryView: View {
             Text("Sending \(robotCount) \(robotCount == 1 ? "Bear" : "Bears") to \(locationName)")
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
-            
-            NavigationLink(destination: ItemListView(), isActive: $navigateToItemList) {
-                Text("Close").foregroundColor(.white)
-            }
         }
         .onAppear {
             startProgress()
@@ -33,6 +29,9 @@ struct SummaryView: View {
         .navigationTitle(locationName)
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $navigateToItemList) {
+            ItemListView()
+        }
     }
     
     func startProgress() {

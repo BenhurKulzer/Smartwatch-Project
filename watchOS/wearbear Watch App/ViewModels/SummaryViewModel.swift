@@ -30,7 +30,7 @@ class SummaryViewModel: ObservableObject {
 
     func sendRobot(locationId: Int, robotCount: Int) {
         var request = Robotservice_CallRequest()
-        request.locationID = String(locationId)  // Convert locationId to String if needed
+        request.locationID = String(locationId)
         
         print("Preparing to send robot with the following details:")
         print("Location ID: \(locationId)")
