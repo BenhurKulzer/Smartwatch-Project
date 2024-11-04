@@ -40,7 +40,7 @@ function sendRobotToLocation(robot, locationId) {
             setTimeout(() => {
                 robots.updateRobotStatus(robot.id, "Idle", 100);
                 console.log(`${robot.name} is fully charged and Idle`);
-            }, 3600000); // 1 hour to fully charge
+            }, 300000); // 5 minutes to fully charge
         }
 
         waitForIdleRobot();
