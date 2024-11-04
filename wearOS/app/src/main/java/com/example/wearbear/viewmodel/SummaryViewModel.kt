@@ -18,7 +18,7 @@ class SummaryViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    val url = URL("http://192.168.1.6:3000/api/robots/call")
+                    val url = URL("https://smartwatch-project.onrender.com/api/robots/call")
                     val connection = (url.openConnection() as HttpURLConnection).apply {
                         requestMethod = "POST"
                         setRequestProperty("Content-Type", "application/json")

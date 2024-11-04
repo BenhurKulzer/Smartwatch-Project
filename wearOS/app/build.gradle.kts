@@ -49,25 +49,30 @@ android {
 }
 
 dependencies {
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.31.1-alpha")
     implementation("com.google.android.gms:play-services-wearable:18.0.0")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material:material")
-    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    implementation("androidx.wear.compose:compose-material:1.1.2")
-    implementation("androidx.wear.compose:compose-foundation:1.1.2")
-    implementation("androidx.wear.compose:compose-navigation:1.1.2")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.navigation:navigation-compose")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
+    implementation("androidx.navigation:navigation-compose")
+
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material:material")
+    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
+
+    implementation("androidx.wear.compose:compose-material:1.1.2")
+    implementation("androidx.wear.compose:compose-foundation:1.1.2")
+    implementation("androidx.wear.compose:compose-navigation:1.1.2")
     implementation("androidx.wear.compose:compose-material3:1.0.0-alpha26")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.31.1-alpha")
+    implementation("com.google.android.apps.common.testing.accessibility.framework:accessibility-test-framework:4.1.1")
+
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
