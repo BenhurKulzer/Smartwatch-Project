@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package robotservice;
+
+service RobotService {
+    rpc GetLocations(Empty) returns (LocationList);
+    rpc GetRobots(Empty) returns (RobotList);
+    rpc GetQueue(Empty) returns (QueueList);
+    rpc CallRobot(CallRequest) returns (CallResponse);
+    rpc CancelCall(CancelRequest) returns (CancelResponse);
+}
+
+message Empty {}
+
+message Location {
+    string id = 1;
+    string name = 2;
+}
+
+message LocationList {
+    repeated Location locations = 1;
+}
+
+message Robot {
+    string id = 1;
+    string name = 2;
+    string status = 3;
+    int32 battery = 4;
+}
+
+message RobotList {
+    repeated Robot robots = 1;
+}
+
+message Queue {
+    string robotId = 1;
+    string locationId = 2;
+    string status = 3;
+}
+
+message QueueList {
+    repeated Queue queues = 1;
+}
+
+message CallRequest {
+    string locationId = 1;
+}
+
+message CallResponse {
+    string message = 1;
+}
+
+message CancelRequest {
+    string locationId = 1;
+}
+
+message CancelResponse {
+    string message = 1;
+}

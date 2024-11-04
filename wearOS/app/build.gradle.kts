@@ -1,12 +1,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.protobuf") version "0.9.2" apply false
+    id("com.google.protobuf")
 }
 
 android {
     namespace = "com.example.wearbear"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.wearbear"
@@ -50,9 +50,9 @@ android {
 }
 
 dependencies {
-    implementation("io.grpc:grpc-okhttp")
-    implementation("io.grpc:grpc-protobuf-lite")
     implementation("io.grpc:grpc-stub")
+    implementation("io.grpc:grpc-protobuf")
+    implementation("io.grpc:grpc-okhttp")
     implementation("javax.annotation:javax.annotation-api")
     implementation("io.github.cdimascio:dotenv-kotlin:6.3.1")
 
