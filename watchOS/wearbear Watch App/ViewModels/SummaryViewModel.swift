@@ -8,7 +8,10 @@ class SummaryViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     
     func sendRobot(locationId: Int, robotCount: Int) {
-        guard let url = URL(string: "http://localhost:3000/api/robots/call") else { return }
+        guard let serverAddress = ProcessInfo.processInfo.environment["SERVER_ADDRESS"],
+              let url = URL(string: "\(serverAddress)/api/robots/call") else {
+            return
+        }
         
         let request = RobotRequest(locationId: locationId, robotCount: robotCount)
         

@@ -22,7 +22,8 @@ class ItemListViewModel: ObservableObject {
     func loadItems() {
         isLoading = true
 
-        guard let url = URL(string: "http://localhost:3000/api/locations") else {
+        guard let serverAddress = ProcessInfo.processInfo.environment["SERVER_ADDRESS"],
+              let url = URL(string: "\(serverAddress)/api/locations") else {
             return
         }
 
@@ -39,7 +40,8 @@ class ItemListViewModel: ObservableObject {
     }
     
     func loadQueueRequests() {
-        guard let url = URL(string: "http://localhost:3000/api/queue") else { return }
+        guard let serverAddress = ProcessInfo.processInfo.environment["SERVER_ADDRESS"],
+              let url = URL(string: "\(serverAddress)/api/queue") else { return }
 
         URLSession.shared.dataTaskPublisher(for: url)
             .map { $0.data }
@@ -68,7 +70,8 @@ class ItemListViewModel: ObservableObject {
     }
 
     func cancelRobotRequest(locationId: Int) {
-        guard let url = URL(string: "http://localhost:3000/api/robots/cancel") else { return }
+        guard let serverAddress = ProcessInfo.processInfo.environment["SERVER_ADDRESS"],
+              let url = URL(string: "\(serverAddress)/api/robots/cancel") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
