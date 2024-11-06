@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		550DCDD22CB73F9900F86C1C /* wearbear Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 550DCDD12CB73F9900F86C1C /* wearbear Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5538D1E12CDB0B5000B52D05 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5538D1E02CDB0B5000B52D05 /* Intents.framework */; };
+		5538D1E82CDB0B5000B52D05 /* RobotControlIntent.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5538D1DE2CDB0B5000B52D05 /* RobotControlIntent.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +34,13 @@
 			remoteGlobalIDString = 550DCDD02CB73F9900F86C1C;
 			remoteInfo = "wearbear Watch App";
 		};
+		5538D1E62CDB0B5000B52D05 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 550DCDC52CB73F9900F86C1C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5538D1DD2CDB0B5000B52D05;
+			remoteInfo = RobotControlIntent;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +55,17 @@
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5538D1E92CDB0B5000B52D05 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5538D1E82CDB0B5000B52D05 /* RobotControlIntent.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -53,7 +73,19 @@
 		550DCDD12CB73F9900F86C1C /* wearbear Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wearbear Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		550DCDE32CB73F9C00F86C1C /* wearbear Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wearbear Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		550DCDED2CB73F9C00F86C1C /* wearbear Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wearbear Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5538D1DE2CDB0B5000B52D05 /* RobotControlIntent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RobotControlIntent.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5538D1E02CDB0B5000B52D05 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5538D1EC2CDB0B5000B52D05 /* Exceptions for "RobotControlIntent" folder in "RobotControlIntent" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5538D1DD2CDB0B5000B52D05 /* RobotControlIntent */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		550DCDD52CB73F9900F86C1C /* wearbear Watch App */ = {
@@ -69,6 +101,14 @@
 		550DCDF02CB73F9C00F86C1C /* wearbear Watch AppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "wearbear Watch AppUITests";
+			sourceTree = "<group>";
+		};
+		5538D1E22CDB0B5000B52D05 /* RobotControlIntent */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5538D1EC2CDB0B5000B52D05 /* Exceptions for "RobotControlIntent" folder in "RobotControlIntent" target */,
+			);
+			path = RobotControlIntent;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -95,6 +135,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5538D1DB2CDB0B5000B52D05 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5538D1E12CDB0B5000B52D05 /* Intents.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -104,6 +152,8 @@
 				550DCDD52CB73F9900F86C1C /* wearbear Watch App */,
 				550DCDE62CB73F9C00F86C1C /* wearbear Watch AppTests */,
 				550DCDF02CB73F9C00F86C1C /* wearbear Watch AppUITests */,
+				5538D1E22CDB0B5000B52D05 /* RobotControlIntent */,
+				5538D1DF2CDB0B5000B52D05 /* Frameworks */,
 				550DCDCC2CB73F9900F86C1C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -115,8 +165,17 @@
 				550DCDD12CB73F9900F86C1C /* wearbear Watch App.app */,
 				550DCDE32CB73F9C00F86C1C /* wearbear Watch AppTests.xctest */,
 				550DCDED2CB73F9C00F86C1C /* wearbear Watch AppUITests.xctest */,
+				5538D1DE2CDB0B5000B52D05 /* RobotControlIntent.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5538D1DF2CDB0B5000B52D05 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5538D1E02CDB0B5000B52D05 /* Intents.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,10 +207,12 @@
 				550DCDCD2CB73F9900F86C1C /* Sources */,
 				550DCDCE2CB73F9900F86C1C /* Frameworks */,
 				550DCDCF2CB73F9900F86C1C /* Resources */,
+				5538D1E92CDB0B5000B52D05 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5538D1E72CDB0B5000B52D05 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				550DCDD52CB73F9900F86C1C /* wearbear Watch App */,
@@ -209,6 +270,28 @@
 			productReference = 550DCDED2CB73F9C00F86C1C /* wearbear Watch AppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		5538D1DD2CDB0B5000B52D05 /* RobotControlIntent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5538D1ED2CDB0B5000B52D05 /* Build configuration list for PBXNativeTarget "RobotControlIntent" */;
+			buildPhases = (
+				5538D1DA2CDB0B5000B52D05 /* Sources */,
+				5538D1DB2CDB0B5000B52D05 /* Frameworks */,
+				5538D1DC2CDB0B5000B52D05 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5538D1E22CDB0B5000B52D05 /* RobotControlIntent */,
+			);
+			name = RobotControlIntent;
+			packageProductDependencies = (
+			);
+			productName = RobotControlIntent;
+			productReference = 5538D1DE2CDB0B5000B52D05 /* RobotControlIntent.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -216,7 +299,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1600;
+				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					550DCDCA2CB73F9900F86C1C = {
@@ -232,6 +315,9 @@
 					550DCDEC2CB73F9C00F86C1C = {
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 550DCDD02CB73F9900F86C1C;
+					};
+					5538D1DD2CDB0B5000B52D05 = {
+						CreatedOnToolsVersion = 16.1;
 					};
 				};
 			};
@@ -253,6 +339,7 @@
 				550DCDD02CB73F9900F86C1C /* wearbear Watch App */,
 				550DCDE22CB73F9C00F86C1C /* wearbear Watch AppTests */,
 				550DCDEC2CB73F9C00F86C1C /* wearbear Watch AppUITests */,
+				5538D1DD2CDB0B5000B52D05 /* RobotControlIntent */,
 			);
 		};
 /* End PBXProject section */
@@ -286,6 +373,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5538D1DC2CDB0B5000B52D05 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -310,6 +404,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5538D1DA2CDB0B5000B52D05 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -327,6 +428,11 @@
 			isa = PBXTargetDependency;
 			target = 550DCDD02CB73F9900F86C1C /* wearbear Watch App */;
 			targetProxy = 550DCDEE2CB73F9C00F86C1C /* PBXContainerItemProxy */;
+		};
+		5538D1E72CDB0B5000B52D05 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5538D1DD2CDB0B5000B52D05 /* RobotControlIntent */;
+			targetProxy = 5538D1E62CDB0B5000B52D05 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -617,6 +723,63 @@
 			};
 			name = Release;
 		};
+		5538D1EA2CDB0B5000B52D05 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J45U97Y9WA;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RobotControlIntent/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RobotControlIntent;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.wearbear.watchkitapp.RobotControlIntent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.1;
+			};
+			name = Debug;
+		};
+		5538D1EB2CDB0B5000B52D05 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J45U97Y9WA;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RobotControlIntent/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RobotControlIntent;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.wearbear.watchkitapp.RobotControlIntent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 11.1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -661,6 +824,15 @@
 			buildConfigurations = (
 				550DCE022CB73F9C00F86C1C /* Debug */,
 				550DCE032CB73F9C00F86C1C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5538D1ED2CDB0B5000B52D05 /* Build configuration list for PBXNativeTarget "RobotControlIntent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5538D1EA2CDB0B5000B52D05 /* Debug */,
+				5538D1EB2CDB0B5000B52D05 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

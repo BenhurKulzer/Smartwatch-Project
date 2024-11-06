@@ -14,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-
 import com.example.wearbear.presentation.screens.ItemListScreen
 import com.example.wearbear.presentation.screens.RobotListScreen
 import com.example.wearbear.presentation.screens.SummaryScreen
@@ -25,6 +24,7 @@ import com.example.wearbear.viewmodel.VoiceCommandViewModel
 class MainActivity : ComponentActivity() {
     private val locationViewModel: LocationViewModel by viewModels()
     private val voiceCommandViewModel: VoiceCommandViewModel by viewModels()
+    private var voiceCommandProcessed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,15 +35,18 @@ class MainActivity : ComponentActivity() {
             var showVoiceCommandScreen by remember { mutableStateOf(false) }
             var showSummaryScreen by remember { mutableStateOf(false) }
 
-            intent?.data?.let { uri ->
-                val locationName = uri.getQueryParameter("location") ?: ""
-                if (locationName.isNotEmpty()) {
-                    println("Location name: $locationName")
-                    voiceCommandViewModel.getLocationIdByName(locationName) { locationId ->
-                        locationId?.let {
-                            selectedLocation = locationName
-                            selectedLocationId = it
-                            showVoiceCommandScreen = true
+            if (!voiceCommandProcessed) {
+                intent?.data?.let { uri ->
+                    val locationName = uri.getQueryParameter("location") ?: ""
+                    if (locationName.isNotEmpty()) {
+                        println("Location name: $locationName")
+                        voiceCommandViewModel.getLocationIdByName(locationName) { locationId ->
+                            locationId?.let {
+                                selectedLocation = locationName
+                                selectedLocationId = it
+                                showVoiceCommandScreen = true
+                                voiceCommandProcessed = true
+                            }
                         }
                     }
                 }
@@ -63,6 +66,9 @@ class MainActivity : ComponentActivity() {
                         numberOfBears = numberOfBears,
                         onClose = {
                             showSummaryScreen = false
+                            selectedLocation = null
+                            selectedLocationId = null
+                            numberOfBears = 1
                         }
                     )
                 } else if (selectedLocation == null || selectedLocationId == null) {
