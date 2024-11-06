@@ -18,10 +18,13 @@ import androidx.compose.ui.graphics.Color
 import com.example.wearbear.presentation.screens.ItemListScreen
 import com.example.wearbear.presentation.screens.RobotListScreen
 import com.example.wearbear.presentation.screens.SummaryScreen
+import com.example.wearbear.presentation.screens.VoiceCommandScreen
 import com.example.wearbear.viewmodel.LocationViewModel
+import com.example.wearbear.viewmodel.VoiceCommandViewModel
 
 class MainActivity : ComponentActivity() {
     private val locationViewModel: LocationViewModel by viewModels()
+    private val voiceCommandViewModel: VoiceCommandViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,26 +32,45 @@ class MainActivity : ComponentActivity() {
             var selectedLocation by remember { mutableStateOf<String?>(null) }
             var selectedLocationId by remember { mutableStateOf<Int?>(null) }
             var numberOfBears by remember { mutableIntStateOf(1) }
+            var showVoiceCommandScreen by remember { mutableStateOf(false) }
             var showSummaryScreen by remember { mutableStateOf(false) }
 
+            intent?.data?.let { uri ->
+                val locationName = uri.getQueryParameter("location") ?: ""
+                if (locationName.isNotEmpty()) {
+                    println("Location name: $locationName")
+                    voiceCommandViewModel.getLocationIdByName(locationName) { locationId ->
+                        locationId?.let {
+                            selectedLocation = locationName
+                            selectedLocationId = it
+                            showVoiceCommandScreen = true
+                        }
+                    }
+                }
+            }
+
             Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
-                if (selectedLocation == null || selectedLocationId == null) {
-                    ItemListScreen(locationViewModel) { locationName, locationId ->
-                        selectedLocation = locationName
-                        selectedLocationId = locationId
+                if (showVoiceCommandScreen) {
+                    VoiceCommandScreen(command = "Send a robot to $selectedLocation") {
+                        selectedLocation = null
+                        selectedLocationId = null
+                        showVoiceCommandScreen = false
                     }
                 } else if (showSummaryScreen) {
                     SummaryScreen(
-                        locationId = selectedLocationId!!,
-                        locationName = selectedLocation!!,
+                        locationId = selectedLocationId ?: 0,
+                        locationName = selectedLocation ?: "",
                         numberOfBears = numberOfBears,
                         onClose = {
-                            selectedLocation = null
-                            selectedLocationId = null
                             showSummaryScreen = false
-                            numberOfBears = 1
                         }
                     )
+                } else if (selectedLocation == null || selectedLocationId == null) {
+                    ItemListScreen(locationViewModel) { locationName, locationId ->
+                        selectedLocation = locationName
+                        selectedLocationId = locationId
+                        showSummaryScreen = true
+                    }
                 } else {
                     RobotListScreen(
                         locationName = selectedLocation!!,

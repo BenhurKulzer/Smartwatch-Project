@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actions>
+    <action intentName="actions.intent.GET_LOCATION">
+        <fulfillment urlTemplate="https://wearbear.com/callrobot/{location}">
+            <parameter-mapping>
+                <map intentParameter="location.name" urlParameter="location" />
+            </parameter-mapping>
+        </fulfillment>
+    </action>
+</actions>
