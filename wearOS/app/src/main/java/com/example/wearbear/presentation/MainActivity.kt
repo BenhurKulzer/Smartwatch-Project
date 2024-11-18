@@ -39,7 +39,6 @@ class MainActivity : ComponentActivity() {
                 intent?.data?.let { uri ->
                     val locationName = uri.getQueryParameter("location") ?: ""
                     if (locationName.isNotEmpty()) {
-                        println("Location name: $locationName")
                         voiceCommandViewModel.getLocationIdByName(locationName) { locationId ->
                             locationId?.let {
                                 selectedLocation = locationName
@@ -75,7 +74,6 @@ class MainActivity : ComponentActivity() {
                     ItemListScreen(locationViewModel) { locationName, locationId ->
                         selectedLocation = locationName
                         selectedLocationId = locationId
-                        showSummaryScreen = true
                     }
                 } else {
                     RobotListScreen(
